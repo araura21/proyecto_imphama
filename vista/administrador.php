@@ -21,11 +21,14 @@
       <div class="desc">Panel de administración<br>Bienvenido Administrador</div>
       <nav class="nav">
   <button class="nav-item active" id="btn-roles" type="button"><i class="fas fa-chart-line"></i>Roles</button>
+  <button class="nav-item" id="btn-empleado" type="button"><i class="fas fa-user-tie"></i>Empleado</button>
+  <button class="nav-item" id="btn-usuario" type="button"><i class="fas fa-user"></i>Usuario</button>
       </nav>
     </aside>
     <main class="main-content" id="main-content">
       Selecciona una opción del menú para ver el contenido.
     </main>
+  <!-- Eliminado: la navegación ahora es dinámica vía admin.js -->
   <script src="../validaciones/admin.js"></script>
   </div>
 </body>

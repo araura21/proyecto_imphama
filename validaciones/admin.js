@@ -1,4 +1,31 @@
+
+function setActiveMenu(id) {
+  document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+document.getElementById('btn-empleado').addEventListener('click', function() {
+  setActiveMenu('btn-empleado');
+  var main = document.getElementById('main-content');
+  main.innerHTML = '<div style="padding:2em; text-align:center; color:#888;">Cargando...</div>';
+  fetch('empleados.php')
+    .then(function(response) { return response.text(); })
+    .then(function(html) { main.innerHTML = html; })
+    .catch(function(e) { main.innerHTML = '<div style="color:red; padding:2em;">Error al cargar empleados.</div>'; });
+});
+
+document.getElementById('btn-usuario').addEventListener('click', function() {
+  setActiveMenu('btn-usuario');
+  var main = document.getElementById('main-content');
+  main.innerHTML = '<div style="padding:2em; text-align:center; color:#888;">Cargando...</div>';
+  fetch('usuarios.php')
+    .then(function(response) { return response.text(); })
+    .then(function(html) { main.innerHTML = html; })
+    .catch(function(e) { main.innerHTML = '<div style="color:red; padding:2em;">Error al cargar usuarios.</div>'; });
+});
+
 document.getElementById('btn-roles').addEventListener('click', function() {
+  setActiveMenu('btn-roles');
   console.log('[admin.js] Botón Roles clickeado');
   var main = document.getElementById('main-content');
   main.innerHTML = '<div style="padding:2em; text-align:center; color:#888;">Cargando...</div>';

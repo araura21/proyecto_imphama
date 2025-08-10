@@ -10,11 +10,7 @@
     <div class="form-roles-flex">
       <div class="form-roles-label">
   <label for="nombreRol">Nombre del Rol:</label>
-  <select id="selectNombreRol" name="selectNombreRol">
-    <option value="">-- Selecciona un rol existente --</option>
-  </select>
-  <span style="margin:0 8px;">o</span>
-  <input id="nombreRol" type="text" name="nombre" placeholder="Escribe un nombre nuevo">
+  <input id="nombreRol" type="text" name="nombre" placeholder="Escribe el nombre del rol" required>
       </div>
       <button type="submit" class="btn-agregar-rol">Agregar Rol</button>
     </div>
@@ -87,19 +83,4 @@
   <div id="tabla-roles"></div>
   <!-- La tabla de roles se cargará dinámicamente aquí -->
 </div>
-<script>
-// Cargar nombres de roles existentes en el select
-fetch('../controlador/rolesController.php?action=nombres')
-  .then(r => r.json())
-  .then(data => {
-    if (data.success && Array.isArray(data.nombres)) {
-      const select = document.getElementById('selectNombreRol');
-      data.nombres.forEach(nombre => {
-        const opt = document.createElement('option');
-        opt.value = nombre;
-        opt.textContent = nombre;
-        select.appendChild(opt);
-      });
-    }
-  });
-</script>
+

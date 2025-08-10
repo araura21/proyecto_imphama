@@ -1,3 +1,9 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
 /* Reset y base */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -161,7 +167,9 @@ body {
 /* Estilos para panel de administrador */
 .admin-wrapper {
   display: flex;
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 .sidebar {
   width: 300px;
@@ -171,7 +179,11 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 2rem 1rem 1rem 1rem;
-  min-height: 100vh;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
   transition: width 0.3s, padding 0.3s;
 }
 .sidebar .logo {
@@ -223,13 +235,15 @@ body {
   color: #fff;
 }
 .main-content {
-  flex: 1;
+  margin-left: 300px;
+  width: calc(100vw - 300px);
+  height: 100vh;
   padding: 2.5rem 2rem;
   background: #fff;
-  min-height: 100vh;
+  overflow-y: auto;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
   font-size: 1.3rem;
   color: #1f2937;
   box-sizing: border-box;
