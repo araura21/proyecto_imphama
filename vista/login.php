@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,7 +11,6 @@
 </head>
 <body>
   <div class="login-wrapper">
-    <!-- Sección izquierda - Imagen y branding -->
     <div class="left-section">
       <div class="brand-overlay">
         <div class="brand-content">
@@ -23,7 +23,6 @@
       </div>
     </div>
 
-    <!-- Sección derecha - Formulario -->
     <div class="right-section">
       <div class="login-container">
         <div class="login-header">
@@ -31,7 +30,12 @@
           <p class="form-subtitle">Accede a tu cuenta para continuar</p>
         </div>
 
-        <form class="login-form">
+      <?php if (isset($_GET['error']) && $_GET['error']): ?>
+        <div style="color:red; margin-bottom:10px; text-align:center;">
+          <?= htmlspecialchars($_GET['error']) ?>
+        </div>
+      <?php endif; ?>
+      <form class="login-form" method="POST" action="../controlador/loginController.php" autocomplete="off">
           <div class="form-group">
             <label for="usuario" class="form-label">Usuario</label>
             <div class="input-wrapper">
@@ -42,6 +46,7 @@
                 name="usuario" 
                 placeholder="Ingresa tu usuario" 
                 class="form-input"
+                value="<?= isset($_GET['usuario']) ? htmlspecialchars($_GET['usuario']) : '' ?>"
               >
             </div>
           </div>
@@ -56,6 +61,7 @@
                 name="contrasena" 
                 placeholder="Ingresa tu contraseña" 
                 class="form-input"
+                autocomplete="off"
               >
               <button type="button" class="toggle-password" onclick="togglePassword()">
                 <i class="fas fa-eye" id="toggleIcon"></i>
@@ -63,7 +69,7 @@
             </div>
           </div>
 
-          <button type="button" class="login-btn" onclick="handleLogin()">
+          <button type="submit" class="login-btn">
             <span>Iniciar Sesión</span>
             <i class="fas fa-arrow-right btn-icon"></i>
           </button>
@@ -71,3 +77,7 @@
       </div>
     </div>
   </div>
+</div>
+
+</body>
+</html>
