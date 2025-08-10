@@ -14,6 +14,34 @@ document.getElementById('btn-empleado').addEventListener('click', function() {
     .catch(function(e) { main.innerHTML = '<div style="color:red; padding:2em;">Error al cargar empleados.</div>'; });
 });
 
+// Delegación global para paginación AJAX de empleados
+document.addEventListener('click', function(e) {
+  var main = document.getElementById('main-content');
+  if (!main) return;
+  var pagLink = e.target.closest('.paginacion-empleados a');
+  if (pagLink && main.contains(pagLink)) {
+    e.preventDefault();
+    fetch(pagLink.href)
+      .then(r => r.text())
+      .then(html => { main.innerHTML = html; });
+  }
+});
+
+// Delegación global para el selector de cantidad por página en empleados
+document.addEventListener('change', function(e) {
+  var main = document.getElementById('main-content');
+  if (!main) return;
+  if (e.target.id === 'size' && main.contains(e.target)) {
+    e.preventDefault();
+    var form = e.target.closest('form');
+    if (!form) return;
+    var params = new URLSearchParams(new FormData(form)).toString();
+    fetch('empleados.php?' + params)
+      .then(r => r.text())
+      .then(html => { main.innerHTML = html; });
+  }
+});
+
 document.getElementById('btn-usuario').addEventListener('click', function() {
   setActiveMenu('btn-usuario');
   var main = document.getElementById('main-content');
