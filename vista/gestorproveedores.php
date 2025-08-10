@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel Administrador - IMPHAMA</title>
+  <title>Panel Gestor de Proveedores - IMPHAMA</title>
   <link rel="stylesheet" href="assets/css/estilos.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -15,11 +15,9 @@
         <img src="assets/img/logo.png" alt="IMPHAMA Logo">
         <span class="logo-text">IMPHAMA</span>
       </div>
-      <div class="desc">Panel de administración<br>Bienvenido Administrador</div>
+      <div class="desc">Panel de proveedores<br>Bienvenido Gestor de Proveedores</div>
       <nav class="nav">
-        <button class="nav-item active"><i class="fas fa-chart-line"></i> Dashboard</button>
-        <button class="nav-item"><i class="fas fa-users"></i> Gestion de usuarios</button>
-        <button class="nav-item"><i class="fas fa-clipboard-check"></i> Auditoría</button>
+        <button class="nav-item active"><i class="fas fa-handshake"></i> Proveedores</button>
       </nav>
     </aside>
     <main class="main-content">
