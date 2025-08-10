@@ -20,12 +20,13 @@
       </div>
       <div class="desc">Panel de administración<br>Bienvenido Administrador</div>
       <nav class="nav">
-        <button class="nav-item active"><i class="fas fa-chart-line"></i>Roles</button>
+  <button class="nav-item active" id="btn-roles" type="button"><i class="fas fa-chart-line"></i>Roles</button>
       </nav>
     </aside>
-    <main class="main-content">
+    <main class="main-content" id="main-content">
       Selecciona una opción del menú para ver el contenido.
     </main>
+  <script src="../validaciones/admin.js"></script>
   </div>
 </body>
 </html>

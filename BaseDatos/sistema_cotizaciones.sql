@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 10-08-2025 a las 14:35:41
+-- Tiempo de generación: 10-08-2025 a las 21:26:48
 -- Versión del servidor: 8.0.17
 -- Versión de PHP: 7.3.10
 
@@ -354,7 +354,6 @@ INSERT INTO `proveedor` (`idProveedor`, `ruc`, `nombre_empresa`, `telefono`, `co
 CREATE TABLE `rol` (
   `idRol` int(11) NOT NULL,
   `nombre` varchar(100) NOT NULL,
-  `descripcion` varchar(255) DEFAULT NULL,
   `permisos` json DEFAULT NULL,
   `creado_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -363,27 +362,27 @@ CREATE TABLE `rol` (
 -- Volcado de datos para la tabla `rol`
 --
 
-INSERT INTO `rol` (`idRol`, `nombre`, `descripcion`, `permisos`, `creado_at`) VALUES
-(1, 'Administrador', 'Acceso total al sistema', '{\"menu_productos\": 1, \"menu_proveedores\": 1, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
-(2, 'Bodeguero', 'Gestiona productos y stock', '{\"menu_productos\": 1, \"menu_proveedores\": 0, \"menu_cotizaciones\": 0}', '2025-08-10 00:31:25'),
-(3, 'Gestor de Proveedores', 'Gestiona proveedores', '{\"menu_productos\": 0, \"menu_proveedores\": 1, \"menu_cotizaciones\": 0}', '2025-08-10 00:31:25'),
-(4, 'Gestor de Ventas', 'Gestiona ventas y cotizaciones', '{\"menu_productos\": 0, \"menu_proveedores\": 0, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
-(5, 'Auditor', 'Solo lectura de reportes', '{\"menu_productos\": 0, \"menu_proveedores\": 0, \"menu_cotizaciones\": 0}', '2025-08-10 00:31:25'),
-(6, 'Contador', 'Acceso a finanzas', '{\"menu_productos\": 0, \"menu_proveedores\": 0, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
-(7, 'Cliente', 'Acceso limitado a cotizaciones', '{\"menu_productos\": 0, \"menu_proveedores\": 0, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
-(8, 'Soporte', 'Atiende soporte técnico', '{\"menu_productos\": 1, \"menu_proveedores\": 1, \"menu_cotizaciones\": 0}', '2025-08-10 00:31:25'),
-(9, 'Marketing', 'Acceso a productos y promociones', '{\"menu_productos\": 1, \"menu_proveedores\": 0, \"menu_cotizaciones\": 0}', '2025-08-10 00:31:25'),
-(10, 'Administrador Secundario', 'Administrador con permisos limitados', '{\"menu_productos\": 1, \"menu_proveedores\": 1, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
-(11, 'Gerente', 'Gestiona todo el sistema', '{\"menu_productos\": 1, \"menu_proveedores\": 1, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
-(12, 'Vendedor', 'Gestiona ventas y clientes', '{\"menu_productos\": 0, \"menu_proveedores\": 0, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
-(13, 'Logística', 'Gestiona entregas', '{\"menu_productos\": 1, \"menu_proveedores\": 1, \"menu_cotizaciones\": 0}', '2025-08-10 00:31:25'),
-(14, 'Operador', 'Opera la plataforma', '{\"menu_productos\": 1, \"menu_proveedores\": 1, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
-(15, 'Analista', 'Analiza datos y reportes', '{\"menu_productos\": 0, \"menu_proveedores\": 0, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
-(16, 'Compras', 'Gestiona compras y proveedores', '{\"menu_productos\": 0, \"menu_proveedores\": 1, \"menu_cotizaciones\": 0}', '2025-08-10 00:31:25'),
-(17, 'Supervisor', 'Supervisa operaciones', '{\"menu_productos\": 1, \"menu_proveedores\": 1, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
-(18, 'Director', 'Toma decisiones', '{\"menu_productos\": 1, \"menu_proveedores\": 1, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
-(19, 'Practicante', 'Acceso muy limitado', '{\"menu_productos\": 0, \"menu_proveedores\": 0, \"menu_cotizaciones\": 0}', '2025-08-10 00:31:25'),
-(20, 'Invitado', 'Acceso anónimo', '{\"menu_productos\": 0, \"menu_proveedores\": 0, \"menu_cotizaciones\": 0}', '2025-08-10 00:31:25');
+INSERT INTO `rol` (`idRol`, `nombre`, `permisos`, `creado_at`) VALUES
+(1, 'Administrador', '{\"menu_productos\": 1, \"menu_proveedores\": 1, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
+(2, 'Bodeguero', '{\"menu_productos\": 1, \"menu_proveedores\": 0, \"menu_cotizaciones\": 0}', '2025-08-10 00:31:25'),
+(3, 'Gestor de Proveedores', '{\"menu_productos\": 0, \"menu_proveedores\": 1, \"menu_cotizaciones\": 0}', '2025-08-10 00:31:25'),
+(4, 'Gestor de Ventas', '{\"menu_productos\": 0, \"menu_proveedores\": 0, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
+(5, 'Auditor', '{\"menu_productos\": 0, \"menu_proveedores\": 0, \"menu_cotizaciones\": 0}', '2025-08-10 00:31:25'),
+(6, 'Contador', '{\"menu_productos\": 0, \"menu_proveedores\": 0, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
+(7, 'Cliente', '{\"menu_productos\": 0, \"menu_proveedores\": 0, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
+(8, 'Soporte', '{\"menu_productos\": 1, \"menu_proveedores\": 1, \"menu_cotizaciones\": 0}', '2025-08-10 00:31:25'),
+(9, 'Marketing', '{\"menu_productos\": 1, \"menu_proveedores\": 0, \"menu_cotizaciones\": 0}', '2025-08-10 00:31:25'),
+(10, 'Administrador Secundario', '{\"menu_productos\": 1, \"menu_proveedores\": 1, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
+(11, 'Gerente', '{\"menu_productos\": 1, \"menu_proveedores\": 1, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
+(12, 'Vendedor', '{\"menu_productos\": 0, \"menu_proveedores\": 0, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
+(13, 'Logística', '{\"menu_productos\": 1, \"menu_proveedores\": 1, \"menu_cotizaciones\": 0}', '2025-08-10 00:31:25'),
+(14, 'Operador', '{\"menu_productos\": 1, \"menu_proveedores\": 1, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
+(15, 'Analista', '{\"menu_productos\": 0, \"menu_proveedores\": 0, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
+(16, 'Compras', '{\"menu_productos\": 0, \"menu_proveedores\": 1, \"menu_cotizaciones\": 0}', '2025-08-10 00:31:25'),
+(17, 'Supervisor', '{\"menu_productos\": 1, \"menu_proveedores\": 1, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
+(18, 'Director', '{\"menu_productos\": 1, \"menu_proveedores\": 1, \"menu_cotizaciones\": 1}', '2025-08-10 00:31:25'),
+(19, 'Practicante', '{\"menu_productos\": 0, \"menu_proveedores\": 0, \"menu_cotizaciones\": 0}', '2025-08-10 00:31:25'),
+(20, 'Invitado', '{\"menu_productos\": 0, \"menu_proveedores\": 0, \"menu_cotizaciones\": 0}', '2025-08-10 00:31:25');
 
 -- --------------------------------------------------------
 
@@ -406,12 +405,12 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`idUsuario`, `idEmpleado`, `usuario`, `password_hash`, `idRol`, `estado`, `creado_at`) VALUES
-(1, 1, 'administrador@sistema.com', MD5('admin'), 1, 'activo', '2025-08-10 00:31:25'),
-(2, 2, 'maria.gonzalez@example.com', '1234567', 2, 'activo', '2025-08-10 00:31:25'),
+(1, 1, 'administrador@sistema.com', 'admin', 1, 'activo', '2025-08-10 00:31:25'),
+(2, 2, 'maria.gonzalez@example.com', 'a2d679bed5c2f57e3540f88caa01d559c26a0df07df451b9d099d0a84bd5cf05', 2, 'activo', '2025-08-10 00:31:25'),
 (3, 3, 'carlos.rodriguez@example.com', 'a2d679bed5c2f57e3540f88caa01d559c26a0df07df451b9d099d0a84bd5cf05', 3, 'activo', '2025-08-10 00:31:25'),
 (4, 4, 'ana.lopez@example.com', 'a2d679bed5c2f57e3540f88caa01d559c26a0df07df451b9d099d0a84bd5cf05', 4, 'activo', '2025-08-10 00:31:25'),
 (5, 5, 'luis.martinez@example.com', 'a2d679bed5c2f57e3540f88caa01d559c26a0df07df451b9d099d0a84bd5cf05', 5, 'activo', '2025-08-10 00:31:25'),
-(6, 6, 'sofia.hernandez@example.com', 'a2d679bed5c2f57e3540f88caa01d559c26a0df07df451b9d099d0a84bd5cf05', 6, 'activo', '2025-08-10 00:31:25'),
+(6, 6, 'sofia.hernandez@example.com', 'a2d679bed5c2f57e3540f88caa01d559c26a0df07df451b9d099d0a84bd5cf05', 6, 'inactivo', '2025-08-10 00:31:25'),
 (7, 7, 'pedro.ramirez@example.com', 'a2d679bed5c2f57e3540f88caa01d559c26a0df07df451b9d099d0a84bd5cf05', 7, 'activo', '2025-08-10 00:31:25'),
 (8, 8, 'laura.torres@example.com', 'a2d679bed5c2f57e3540f88caa01d559c26a0df07df451b9d099d0a84bd5cf05', 8, 'activo', '2025-08-10 00:31:25'),
 (9, 9, 'diego.flores@example.com', 'a2d679bed5c2f57e3540f88caa01d559c26a0df07df451b9d099d0a84bd5cf05', 9, 'activo', '2025-08-10 00:31:25'),
