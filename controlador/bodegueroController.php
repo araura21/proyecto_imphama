@@ -6,26 +6,39 @@ function agregarProveedor($data) {
     $db = new connectionDB();
     $conn = $db->connection();
 
+    if (!$conn) {
+        return ['success' => false, 'message' => 'Error de conexión a la base de datos'];
+    }
+
     $ruc = trim($data['ruc']);
     $nombre_empresa = trim($data['nombre_empresa']);
     $telefono = trim($data['telefono']);
     $correo = trim($data['correo']);
     $direccion = trim($data['direccion']);
 
+    if (empty($ruc) || empty($nombre_empresa)) {
+        $conn->close();
+        return ['success' => false, 'message' => 'RUC y nombre de empresa son obligatorios'];
+    }
+
     $stmt = $conn->prepare("INSERT INTO proveedor (ruc, nombre_empresa, telefono, correo, direccion) VALUES (?, ?, ?, ?, ?)");
     if (!$stmt) {
-        echo "<script>alert('Error en prepare: " . $conn->error . "');</script>";
+        $error = $conn->error;
         $conn->close();
-        return;
+        return ['success' => false, 'message' => 'Error en prepare: ' . $error];
     }
+
     $stmt->bind_param('sssss', $ruc, $nombre_empresa, $telefono, $correo, $direccion);
     if ($stmt->execute()) {
-        echo "<script>alert('Proveedor agregado correctamente');</script>";
+        $stmt->close();
+        $conn->close();
+        return ['success' => true, 'message' => 'Proveedor agregado correctamente'];
     } else {
-        echo "<script>alert('Error al agregar proveedor: " . $stmt->error . "');</script>";
+        $error = $stmt->error;
+        $stmt->close();
+        $conn->close();
+        return ['success' => false, 'message' => 'Error al agregar proveedor: ' . $error];
     }
-    $stmt->close();
-    $conn->close();
 }
 
 // Obtener proveedores para el select
@@ -63,6 +76,41 @@ function agregarProductoDetalle($data) {
     $db = new connectionDB();
     $conn = $db->connection();
 
+    if (!$conn) {
+        return ['success' => false, 'message' => 'Error de conexión a la base de datos'];
+    }
+
+    // Validar campos obligatorios
+    if (empty($data['idProducto']) || empty($data['idProveedor']) || empty($data['precio_unitario']) || empty($data['cantidad']) || empty($data['moneda'])) {
+        $conn->close();
+        return ['success' => false, 'message' => 'Los campos obligatorios (Producto, Proveedor, Precio Unitario, Cantidad, Moneda) son requeridos'];
+    }
+
+    // Validar existencia de idProducto
+    $stmtCheck = $conn->prepare("SELECT idProducto FROM producto WHERE idProducto = ?");
+    $stmtCheck->bind_param('i', $data['idProducto']);
+    $stmtCheck->execute();
+    $stmtCheck->store_result();
+    if ($stmtCheck->num_rows == 0) {
+        $stmtCheck->close();
+        $conn->close();
+        return ['success' => false, 'message' => 'El producto seleccionado no existe'];
+    }
+    $stmtCheck->close();
+
+    // Validar existencia de idProveedor
+    $stmtCheck = $conn->prepare("SELECT idProveedor FROM proveedor WHERE idProveedor = ?");
+    $stmtCheck->bind_param('i', $data['idProveedor']);
+    $stmtCheck->execute();
+    $stmtCheck->store_result();
+    if ($stmtCheck->num_rows == 0) {
+        $stmtCheck->close();
+        $conn->close();
+        return ['success' => false, 'message' => 'El proveedor seleccionado no existe'];
+    }
+    $stmtCheck->close();
+
+    // Procesar datos
     $idProducto = intval($data['idProducto']);
     $idProveedor = intval($data['idProveedor']);
     $precio_unitario = floatval($data['precio_unitario']);
@@ -104,18 +152,16 @@ function agregarProductoDetalle($data) {
         metodo_transporte, entregas_parciales, marca, modelo, colores_disponibles, tamano_dimensiones, peso, material, pais_origen,
         certificaciones, garantia_mes, durabilidad_estimada, cumplimiento_normas, condiciones_pago, penalizaciones_retraso,
         devolucion, soporte_postventa, servicio_tecnico_incluido, capacitacion_incluida, observaciones
-    ) VALUES (
-        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-    )");
-
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     if (!$stmt) {
-        echo "<script>alert('Error en prepare: " . $conn->error . "');</script>";
+        $error = $conn->error;
+        error_log("Prepare failed: " . $error);
         $conn->close();
-        return;
+        return ['success' => false, 'message' => 'Error en prepare: ' . $error];
     }
 
     $stmt->bind_param(
-        'iididsdddsisissssssssssissssss',
+        'iididsdddisissssssssssisssssiiiiis',
         $idProducto, $idProveedor, $precio_unitario, $cantidad, $moneda, $descuento_volumen, $descuento_promocional, $impuestos_incluidos,
         $costo_envio, $costo_instalacion, $tiempo_entrega_dias, $lugar_entrega, $disponibilidad_inmediata, $capacidad_suministro_mensual,
         $metodo_transporte, $entregas_parciales, $marca, $modelo, $colores_disponibles, $tamano_dimensiones, $peso, $material, $pais_origen,
@@ -124,11 +170,15 @@ function agregarProductoDetalle($data) {
     );
 
     if ($stmt->execute()) {
-        echo "<script>alert('Detalle de producto agregado correctamente');</script>";
+        $stmt->close();
+        $conn->close();
+        return ['success' => true, 'message' => 'Detalle de producto agregado correctamente'];
     } else {
-        echo "<script>alert('Error al agregar detalle: " . $stmt->error . "');</script>";
+        $error = $stmt->error;
+        error_log("Execute failed: " . $error);
+        $stmt->close();
+        $conn->close();
+        return ['success' => false, 'message' => 'Error al agregar detalle: ' . $error];
     }
-    $stmt->close();
-    $conn->close();
 }
 ?>
