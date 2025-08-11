@@ -45,6 +45,18 @@ if ($action === 'agregar' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $debug['permisos_json'] = $permisosJson;
     $db = new connectionDB();
     $conn = $db->connection();
+    // Verificar si ya existe un rol con ese nombre (case-insensitive)
+    $stmtCheck = $conn->prepare('SELECT COUNT(*) FROM rol WHERE LOWER(nombre) = LOWER(?)');
+    $stmtCheck->bind_param('s', $nombre);
+    $stmtCheck->execute();
+    $stmtCheck->bind_result($count);
+    $stmtCheck->fetch();
+    $stmtCheck->close();
+    if ($count > 0) {
+        echo json_encode(['success' => false, 'message' => 'Ya existe un rol con ese nombre.']);
+        $conn->close();
+        exit;
+    }
     $stmt = $conn->prepare('INSERT INTO rol (nombre, permisos) VALUES (?, ?)');
     if (!$stmt) {
         echo json_encode(['success' => false, 'message' => 'Error en prepare: ' . $conn->error, 'debug' => $debug]);

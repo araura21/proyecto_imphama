@@ -46,16 +46,17 @@ function cargarEmpleados() {
     .then(r => r.json())
     .then(data => {
       if (data.success) {
-        // --- Paginación ---
+        // --- Paginación igual a roles ---
         let empleados = data.empleados;
         let pageSize = 3;
         let currentPage = 1;
-        // Controles paginación
+        // Contenedor de paginación y selector
         const paginacionContainer = document.createElement('div');
         paginacionContainer.style.display = 'flex';
         paginacionContainer.style.justifyContent = 'space-between';
         paginacionContainer.style.alignItems = 'center';
         paginacionContainer.style.marginBottom = '12px';
+        // Selector de cantidad
         const select = document.createElement('select');
         [3,5,7].forEach(n => {
           const opt = document.createElement('option');
@@ -65,6 +66,7 @@ function cargarEmpleados() {
         });
         select.value = pageSize;
         select.style.marginRight = '16px';
+        // Controles de página
         const controls = document.createElement('div');
         const btnPrev = document.createElement('button');
         btnPrev.textContent = 'Anterior';
@@ -78,6 +80,7 @@ function cargarEmpleados() {
         controls.appendChild(btnNext);
         paginacionContainer.appendChild(select);
         paginacionContainer.appendChild(controls);
+        // Renderizar tabla paginada
         function renderTabla() {
           let html = `<table id="tablaEmpleados" style="width:100%; table-layout:fixed; border-collapse:collapse; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
             <colgroup>
@@ -129,6 +132,7 @@ function cargarEmpleados() {
           btnPrev.disabled = currentPage === 1;
           btnNext.disabled = currentPage === totalPages;
         }
+        // Eventos
         select.addEventListener('change', function() {
           pageSize = parseInt(this.value);
           currentPage = 1;

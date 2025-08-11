@@ -1,7 +1,19 @@
 
 // Permite inicializar roles desde admin.js
 window.initRoles = function() {
-  cargarRoles();
+
+  let rolesCache = [];
+  function cargarRolesYCache(cb) {
+    fetch('../controlador/rolesController.php?action=listar')
+      .then(r => r.json())
+      .then(data => {
+        if (data.success) {
+          rolesCache = data.roles;
+        }
+        if (cb) cb(data);
+      });
+  }
+  cargarRolesYCache(cargarRoles);
 
   // Crear contenedor de mensajes si no existe
   let msg = document.getElementById('msg-roles');
@@ -21,8 +33,14 @@ window.initRoles = function() {
       msg.style.color = 'red';
       return;
     }
+    // Validar que no se repita el nombre del rol (case-insensitive)
+    if (rolesCache.some(r => r.nombre.toLowerCase() === nombre.toLowerCase())) {
+      msg.textContent = 'Ya existe un rol con ese nombre.';
+      msg.style.color = 'red';
+      return;
+    }
     const accesos = Array.from(document.querySelectorAll('input[name="accesos[]"]:checked')).map(cb => cb.value);
-    fetch('../controlador/rolesController.php?action=agregar', {
+  fetch('../controlador/rolesController.php?action=agregar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: 'nombre=' + encodeURIComponent(nombre) + '&permisos=' + encodeURIComponent(JSON.stringify(accesos))
@@ -33,7 +51,7 @@ window.initRoles = function() {
       msg.style.color = data.success ? 'green' : 'red';
       if (data.success) {
         document.getElementById('formAgregarRol').reset();
-        cargarRoles();
+        cargarRolesYCache(cargarRoles);
       }
     })
     .catch(() => {
@@ -48,11 +66,11 @@ function cargarRoles() {
     .then(r => r.json())
     .then(data => {
       if (data.success) {
-        // --- Paginación ---
+        // --- Paginación igual a empleados ---
         let roles = data.roles;
         let pageSize = 3;
         let currentPage = 1;
-        // Crear contenedor de paginación y selector
+        // Contenedor de paginación y selector
         const paginacionContainer = document.createElement('div');
         paginacionContainer.style.display = 'flex';
         paginacionContainer.style.justifyContent = 'space-between';
@@ -77,14 +95,11 @@ function cargarRoles() {
         btnNext.textContent = 'Siguiente';
         const pageInfo = document.createElement('span');
         pageInfo.style.margin = '0 10px';
-
         controls.appendChild(btnPrev);
         controls.appendChild(pageInfo);
         controls.appendChild(btnNext);
-
         paginacionContainer.appendChild(select);
         paginacionContainer.appendChild(controls);
-
         // Renderizar tabla paginada
         function renderTabla() {
           let html = `<table id="tablaRoles" style="width:100%; table-layout:fixed; border-collapse:collapse; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
@@ -142,7 +157,6 @@ function cargarRoles() {
           btnPrev.disabled = currentPage === 1;
           btnNext.disabled = currentPage === totalPages;
         }
-
         // Eventos
         select.addEventListener('change', function() {
           pageSize = parseInt(this.value);
@@ -162,7 +176,6 @@ function cargarRoles() {
             renderTabla();
           }
         });
-
         renderTabla();
       }
     });

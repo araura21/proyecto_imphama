@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Complete todos los campos.';
     }
     if ($error !== '') {
-        header('Location: ../vista/login.php?error=' . urlencode($error) . '&usuario=' . urlencode($usuario));
+        header('Location: index.php?error=' . urlencode($error) . '&usuario=' . urlencode($usuario));
         exit();
     }
 }
