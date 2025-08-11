@@ -13,40 +13,37 @@ function cargarEmpleadosYRoles() {
         const select = document.getElementById('idEmpleado');
         select.innerHTML = '<option value="">Seleccione...</option>';
         data.empleados.forEach(emp => {
-          // Suponiendo que el campo rol existe en el objeto emp
           select.innerHTML += `<option value="${emp.idEmpleado}" data-rol="${emp.rol ?? ''}">${emp.nombre} ${emp.apellido} (${emp.cedula})</option>`;
         });
+
+  // Ya no se valida si el empleado está registrado como usuario al seleccionar
+  select.onchange = null;
       }
     });
-  // Cargar roles
+  // Cargar roles y llenar el select de roles
   fetch('../controlador/rolesController.php?action=listar')
     .then(r => r.json())
     .then(data => {
       if (data.success) {
         window._rolesUsuarios = data.roles;
+        const selectRol = document.getElementById('idRol');
+        if (selectRol) {
+          selectRol.innerHTML = '<option value="">Seleccione...</option>';
+          data.roles.forEach(rol => {
+            selectRol.innerHTML += `<option value="${rol.idRol}">${rol.idRol}</option>`;
+          });
+        }
       }
     });
-  // Evento para actualizar el rol automáticamente
-  document.getElementById('idEmpleado').addEventListener('change', function() {
-    const idEmpleado = this.value;
-    if (!idEmpleado) {
-      document.getElementById('rolEmpleado').value = '';
-      return;
-    }
-    // Buscar el rol asignado en la tabla usuarios
-    fetch('../controlador/usuariosController.php?action=listar')
-      .then(r => r.json())
-      .then(data => {
-        if (data.success) {
-          const usuario = data.usuarios.find(u => u.cedula && this.options[this.selectedIndex].text.includes(u.cedula));
-          if (usuario && usuario.rol) {
-            document.getElementById('rolEmpleado').value = usuario.rol;
-          } else {
-            document.getElementById('rolEmpleado').value = '';
-          }
-        }
-      });
+  // Mostrar el nombre del rol seleccionado en el input readonly
+  document.getElementById('idRol').addEventListener('change', function() {
+    const idRol = this.value;
+    const rol = (window._rolesUsuarios || []).find(r => r.idRol == idRol);
+    document.getElementById('rolEmpleado').value = rol ? rol.nombre : '';
   });
+
+  // Evento para actualizar el rol automáticamente
+  // Si quieres que el nombre del rol se asigne automáticamente según el empleado, aquí puedes hacerlo
 }
 
   // Mensaje
@@ -63,11 +60,13 @@ function cargarEmpleadosYRoles() {
     e.preventDefault();
     const idEmpleado = document.getElementById('idEmpleado').value;
     const idRol = document.getElementById('idRol').value;
+    const usuario = document.getElementById('usuario').value;
+    const password = document.getElementById('password').value;
     const estado = document.getElementById('estado').value;
-    fetch('../controlador/usuariosController.php?action=agregar', {
+  fetch('../controlador/usuarios/agregarUsuario.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: `idEmpleado=${encodeURIComponent(idEmpleado)}&idRol=${encodeURIComponent(idRol)}&estado=${encodeURIComponent(estado)}`
+      body: `idEmpleado=${encodeURIComponent(idEmpleado)}&idRol=${encodeURIComponent(idRol)}&usuario=${encodeURIComponent(usuario)}&password=${encodeURIComponent(password)}&estado=${encodeURIComponent(estado)}`
     })
     .then(r => r.json())
     .then(data => {
@@ -96,7 +95,7 @@ function cargarUsuarios() {
         let currentPage = 1;
         // Contenedor de paginación y selector
         const paginacionContainer = document.createElement('div');
-              paginacionContainer.style.display = 'flex';
+        paginacionContainer.style.display = 'flex';
         paginacionContainer.style.justifyContent = 'space-between';
         paginacionContainer.style.alignItems = 'center';
         paginacionContainer.style.marginBottom = '12px';
@@ -122,6 +121,120 @@ function cargarUsuarios() {
         controls.appendChild(btnPrev);
         controls.appendChild(pageInfo);
         controls.appendChild(btnNext);
+
+        // Modal edición y eliminar
+        function abrirModalEditar(usuario) {
+          // Cargar empleados y roles en selects del modal
+          fetch('../controlador/empleadosController.php?action=listar')
+            .then(r => r.json())
+            .then(dataEmp => {
+              const selEmp = document.getElementById('edit_idEmpleado');
+              selEmp.innerHTML = '<option value="">Seleccione...</option>';
+              let empActual = null;
+              dataEmp.empleados.forEach(emp => {
+                selEmp.innerHTML += `<option value=\"${emp.idEmpleado}\">${emp.nombre} ${emp.apellido} (${emp.cedula})</option>`;
+                if (emp.idEmpleado == usuario.idEmpleado) empActual = emp;
+              });
+              setTimeout(() => { selEmp.value = usuario.idEmpleado; }, 0);
+              // Mostrar info en cabecera usando los datos del usuario
+              let info = '';
+              if (usuario.nombreEmpleado && usuario.apellidoEmpleado && usuario.cedula) {
+                info += `<b>${usuario.nombreEmpleado} ${usuario.apellidoEmpleado}</b> &nbsp; <span style='color:#888;'>(${usuario.cedula})</span>`;
+              } else if (empActual) {
+                info += `<b>${empActual.nombre} ${empActual.apellido}</b> &nbsp; <span style='color:#888;'>(${empActual.cedula})</span>`;
+              }
+              fetch('../controlador/rolesController.php?action=listar')
+                .then(r => r.json())
+                .then(dataRol => {
+                  const selRol = document.getElementById('edit_idRol');
+                  selRol.innerHTML = '<option value="">Seleccione...</option>';
+                  let rolActual = null;
+                  dataRol.roles.forEach(rol => {
+                    selRol.innerHTML += `<option value=\"${rol.idRol}\">${rol.idRol}</option>`;
+                    if (rol.idRol == usuario.idRol) rolActual = rol;
+                  });
+                  setTimeout(() => { selRol.value = usuario.idRol; }, 0);
+                  setTimeout(() => { document.getElementById('edit_rolEmpleado').value = usuario.nombreRol || (rolActual ? rolActual.nombre : ''); }, 0);
+                  if (usuario.nombreRol) info += `<br><span style='color:#555;'>Rol: <b>${usuario.nombreRol}</b></span>`;
+                  else if (rolActual) info += `<br><span style='color:#555;'>Rol: <b>${rolActual.nombre}</b></span>`;
+                  const infoDiv = document.getElementById('infoEditarUsuario');
+                  infoDiv.innerHTML = info;
+                  infoDiv.style.display = info ? 'block' : 'none';
+                  setTimeout(() => {
+                    document.getElementById('edit_idUsuario').value = usuario.idUsuario;
+                    document.getElementById('edit_usuario').value = usuario.usuario;
+                    document.getElementById('edit_password').value = '';
+                    document.getElementById('edit_estado').value = usuario.estado;
+                    document.getElementById('modalEditarUsuario').style.display = 'flex';
+                  }, 0);
+                });
+            });
+          document.getElementById('edit_idRol').onchange = function() {
+            const idRol = this.value;
+            fetch('../controlador/rolesController.php?action=listar')
+              .then(r => r.json())
+              .then(dataRol => {
+                const rolObj = dataRol.roles.find(r => r.idRol == idRol);
+                document.getElementById('edit_rolEmpleado').value = rolObj ? rolObj.nombre : '';
+              });
+          };
+          document.getElementById('edit_idUsuario').value = usuario.idUsuario;
+          document.getElementById('edit_usuario').value = usuario.usuario;
+          document.getElementById('edit_password').value = '';
+          document.getElementById('edit_estado').value = usuario.estado;
+          document.getElementById('modalEditarUsuario').style.display = 'flex';
+        }
+        document.getElementById('cerrarModalEditarUsuario').onclick = function() {
+          document.getElementById('modalEditarUsuario').style.display = 'none';
+          document.getElementById('msg-editar-usuario').textContent = '';
+        };
+        document.getElementById('formEditarUsuario').onsubmit = function(e) {
+          e.preventDefault();
+          const idUsuario = document.getElementById('edit_idUsuario').value;
+          const idEmpleado = document.getElementById('edit_idEmpleado').value;
+          const idRol = document.getElementById('edit_idRol').value;
+          const usuario = document.getElementById('edit_usuario').value;
+          const password = document.getElementById('edit_password').value;
+          const estado = document.getElementById('edit_estado').value;
+          fetch('../controlador/usuarios/editarUsuario.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `idUsuario=${encodeURIComponent(idUsuario)}&idEmpleado=${encodeURIComponent(idEmpleado)}&idRol=${encodeURIComponent(idRol)}&usuario=${encodeURIComponent(usuario)}&password=${encodeURIComponent(password)}&estado=${encodeURIComponent(estado)}`
+          })
+          .then(r => r.json())
+          .then(data => {
+            const msg = document.getElementById('msg-editar-usuario');
+            msg.textContent = data.message;
+            msg.style.color = data.success ? 'green' : 'red';
+            if (data.success) {
+              setTimeout(() => {
+                document.getElementById('modalEditarUsuario').style.display = 'none';
+                msg.textContent = '';
+                cargarUsuarios();
+              }, 1200);
+            }
+          })
+          .catch(() => {
+            const msg = document.getElementById('msg-editar-usuario');
+            msg.textContent = 'Error de conexión con el servidor.';
+            msg.style.color = 'red';
+          });
+        };
+        // Eliminar usuario
+        window.eliminarUsuario = function(idUsuario) {
+          if (!confirm('¿Está seguro de eliminar este usuario?')) return;
+          fetch('../controlador/usuarios/eliminarUsuario.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `idUsuario=${encodeURIComponent(idUsuario)}`
+          })
+          .then(r => r.json())
+          .then(data => {
+            alert(data.message);
+            if (data.success) cargarUsuarios();
+          })
+          .catch(() => alert('Error de conexión con el servidor.'));
+        };
         paginacionContainer.appendChild(select);
         paginacionContainer.appendChild(controls);
         // Renderizar tabla paginada
@@ -150,11 +263,11 @@ function cargarUsuarios() {
             html += `<tr>
               <td style=\"padding:10px; border:1px solid #ddd;\">${usuario.idUsuario}</td>
               <td style=\"padding:10px; border:1px solid #ddd;\">${usuario.cedula}</td>
-              <td style=\"padding:10px; border:1px solid #ddd;\">${usuario.rol}</td>
+              <td style=\"padding:10px; border:1px solid #ddd;\">${usuario.nombreRol || usuario.rol}</td>
               <td style="padding:10px; border:1px solid #ddd; text-align:center;">${usuario.estado === 'activo' ? '<span style=\'background:#27ae60; color:#fff; padding:4px 12px; border-radius:4px; font-weight:600;\'>Activo</span>' : '<span style=\'background:#c0392b; color:#fff; padding:4px 12px; border-radius:4px; font-weight:600;\'>Inactivo</span>'}</td>
               <td style=\"padding:10px; border:1px solid #ddd;\">
-                <button style=\"background:#2980b9; color:#fff; border:none; padding:6px 12px; border-radius:4px; margin-right:6px; cursor:pointer;\">Editar</button>
-                <button style=\"background:${usuario.estado === 'activo' ? '#e74c3c' : '#27ae60'}; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;\">${usuario.estado === 'activo' ? 'Deshabilitar' : 'Habilitar'}</button>
+                <button onclick="window._editarUsuario && window._editarUsuario(${encodeURIComponent(usuario.idUsuario)})" style=\"background:#2980b9; color:#fff; border:none; padding:6px 12px; border-radius:4px; margin-right:6px; cursor:pointer;\">Editar</button>
+                <button onclick="eliminarUsuario(${encodeURIComponent(usuario.idUsuario)})" style=\"background:${usuario.estado === 'activo' ? '#e74c3c' : '#27ae60'}; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;\">Eliminar</button>
               </td>
             </tr>`;
           });
@@ -190,6 +303,11 @@ function cargarUsuarios() {
           }
         });
         renderTabla();
+        // Handler global para editar
+        window._editarUsuario = function(idUsuario) {
+          const usuario = usuarios.find(u => u.idUsuario == idUsuario);
+          if (usuario) abrirModalEditar(usuario);
+        };
       }
     });
 }

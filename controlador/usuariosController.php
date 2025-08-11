@@ -6,7 +6,7 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
 if ($action === 'listar') {
     $db = new connectionDB();
     $conn = $db->connection();
-    $sql = 'SELECT u.idUsuario, e.cedula, r.nombre AS rol, u.estado FROM usuario u 
+    $sql = 'SELECT u.idUsuario, u.idEmpleado, u.idRol, u.usuario, u.estado, e.cedula, e.nombre AS nombreEmpleado, e.apellido AS apellidoEmpleado, r.nombre AS nombreRol FROM usuario u 
             JOIN empleado e ON u.idEmpleado = e.idEmpleado 
             JOIN rol r ON u.idRol = r.idRol 
             ORDER BY u.idUsuario ASC';
