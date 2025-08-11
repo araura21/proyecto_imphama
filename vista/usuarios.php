@@ -33,45 +33,13 @@
     </div>
     <button type="submit" style="background:#8e44ad; color:#fff; border:none; padding:10px 24px; border-radius:6px; font-weight:600; font-size:1rem; cursor:pointer; box-shadow:0 2px 8px rgba(142,68,173,0.08);">Agregar Usuario</button>
   </form>
-  <table id="tablaUsuarios" style="width:100%; border-collapse:collapse; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-    <thead>
-      <tr style="background:#f4f4f4;">
-        <th style="padding:10px; border:1px solid #ddd;">ID Usuario</th>
-        <th style="padding:10px; border:1px solid #ddd;">Empleado (Cédula)</th>
-        <th style="padding:10px; border:1px solid #ddd;">Rol</th>
-        <th style="padding:10px; border:1px solid #ddd;">Estado</th>
-        <th style="padding:10px; border:1px solid #ddd;">Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Ejemplo de usuarios, reemplazar por datos dinámicos -->
-      <tr>
-        <td style="padding:10px; border:1px solid #ddd;">1</td>
-        <td style="padding:10px; border:1px solid #ddd;">12345678</td>
-        <td style="padding:10px; border:1px solid #ddd;">Administrador</td>
-        <td style="padding:10px; border:1px solid #ddd;">
-          <span style="background:#27ae60; color:#fff; padding:4px 12px; border-radius:4px; font-weight:600;">Activo</span>
-        </td>
-        <td style="padding:10px; border:1px solid #ddd;">
-          <button style="background:#2980b9; color:#fff; border:none; padding:6px 12px; border-radius:4px; margin-right:6px; cursor:pointer;">Editar</button>
-          <button style="background:#e74c3c; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;">Deshabilitar</button>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding:10px; border:1px solid #ddd;">2</td>
-        <td style="padding:10px; border:1px solid #ddd;">87654321</td>
-        <td style="padding:10px; border:1px solid #ddd;">Bodeguero</td>
-        <td style="padding:10px; border:1px solid #ddd;">
-          <span style="background:#c0392b; color:#fff; padding:4px 12px; border-radius:4px; font-weight:600;">Inactivo</span>
-        </td>
-        <td style="padding:10px; border:1px solid #ddd;">
-          <button style="background:#2980b9; color:#fff; border:none; padding:6px 12px; border-radius:4px; margin-right:6px; cursor:pointer;">Editar</button>
-          <button style="background:#27ae60; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;">Habilitar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div id="tabla-usuarios"></div>
 </div>
 <script>
-// Aquí iría la lógica JS para el CRUD, por ahora solo es maqueta visual
+// Inicializar la tabla dinámica de usuarios
+window.addEventListener('DOMContentLoaded', function() {
+  if (window.initUsuarios) window.initUsuarios();
+});
+// El archivo usuarios.js debe estar cargado desde admin.js o aquí
+// <script src="../validaciones/usuarios.js"></script>
 </script>

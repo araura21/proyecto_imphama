@@ -84,13 +84,13 @@ function cargarEmpleados() {
         function renderTabla() {
           let html = `<table id="tablaEmpleados" style="width:100%; table-layout:fixed; border-collapse:collapse; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
             <colgroup>
-              <col style="min-width:90px; max-width:110px; width:100px;">
-              <col style="min-width:120px; max-width:180px; width:150px;">
-              <col style="min-width:120px; max-width:180px; width:150px;">
-              <col style="min-width:120px; max-width:180px; width:150px;">
-              <col style="min-width:120px; max-width:180px; width:150px;">
-              <col style="min-width:180px; max-width:220px; width:200px;">
-              <col style="min-width:120px; max-width:160px; width:130px;">
+              <col style="min-width:50px; max-width:110px; width:110px;"> <!-- ID -->
+              <col style="min-width:50px; max-width:110px; width:110px;"> <!-- Nombre -->
+              <col style="min-width:50px; max-width:110px; width:110px;"> <!-- Apellido -->
+              <col style="min-width:50px; max-width:110px; width:110px;"> <!-- Cedula -->
+              <col style="min-width:50px; max-width:110px; width:110px;"> <!-- Telefono -->
+              <col style="min-width:320px; max-width:600px; width:250px;"> <!-- Correo -->
+              <col style="min-width:100px; max-width:140px; width:120px;"> <!-- Acciones -->
             </colgroup>
             <thead>
               <tr style="background:#f4f4f4;">
@@ -113,7 +113,7 @@ function cargarEmpleados() {
               <td style=\"padding:10px; border:1px solid #ddd;\">${emp.apellido}</td>
               <td style=\"padding:10px; border:1px solid #ddd;\">${emp.cedula}</td>
               <td style=\"padding:10px; border:1px solid #ddd;\">${emp.telefono}</td>
-              <td style=\"padding:10px; border:1px solid #ddd;\">${emp.correo}</td>
+              <td style=\"padding:10px; border:1px solid #ddd; max-width:380px;\">${emp.correo}</td>
               <td style=\"padding:10px; border:1px solid #ddd;\">
                 <button style=\"background:#27ae60; color:#fff; border:none; padding:6px 12px; border-radius:4px; margin-right:6px; cursor:pointer;\">Editar</button>
                 <button style=\"background:#e74c3c; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;\">Eliminar</button>

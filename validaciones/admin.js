@@ -31,6 +31,7 @@ function addMenuHandler(btnId, phpFile, extraScript) {
           script.onload = function() {
             if (btnId === 'btn-roles' && window.initRoles) window.initRoles();
             if (btnId === 'btn-empleados' && window.initEmpleados) window.initEmpleados();
+            if (btnId === 'btn-usuarios' && window.initUsuarios) window.initUsuarios();
           };
           document.body.appendChild(script);
         }
@@ -43,7 +44,7 @@ addMenuHandler('btn-dashboard', 'dashboard.php');
 addMenuHandler('btn-auditoria', 'auditoria.php');
 addMenuHandler('btn-roles', 'roles.php', '../validaciones/roles.js');
 addMenuHandler('btn-empleados', 'empleados.php', '../validaciones/empleados.js');
-addMenuHandler('btn-usuarios', 'usuarios.php');
+addMenuHandler('btn-usuarios', 'usuarios.php', '../validaciones/usuarios.js');
 addMenuHandler('btn-productos', 'productos.php');
 addMenuHandler('btn-detalle-productos', 'detalleProductos.php');
 addMenuHandler('btn-cotizaciones', 'cotizaciones.php');
