@@ -55,6 +55,4 @@
     </tbody>
   </table>
 </div>
-<script>
-// Aquí iría la lógica JS para el CRUD, por ahora solo es maqueta visual
-</script>
+
