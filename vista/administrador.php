@@ -30,11 +30,12 @@
         <button class="nav-item" id="btn-roles" type="button"><i class="fas fa-user-shield"></i> Roles</button>
         <button class="nav-item" id="btn-empleados" type="button"><i class="fas fa-users"></i> Empleados</button>
         <button class="nav-item" id="btn-usuarios" type="button"><i class="fas fa-user"></i> Usuarios</button>
-        <button class="nav-item" id="btn-productos" type="button"><i class="fas fa-box"></i> Productos</button>
-        <button class="nav-item" id="btn-detalle-productos" type="button"><i class="fas fa-info-circle"></i> Detalle Productos</button>
-        <button class="nav-item" id="btn-cotizaciones" type="button"><i class="fas fa-file-invoice-dollar"></i> Cotizaciones</button>
-        <button class="nav-item" id="btn-clientes" type="button"><i class="fas fa-address-book"></i> Clientes</button>
-        <button class="nav-item" id="btn-generar-cotizacion" type="button"><i class="fas fa-file-signature"></i> Generar Cotización</button>
+  <button class="nav-item" id="btn-productos" type="button"><i class="fas fa-box"></i> Productos</button>
+  <button class="nav-item" id="btn-proveedores" type="button"><i class="fas fa-handshake"></i> Proveedores</button>
+  <button class="nav-item" id="btn-detalle-productos" type="button"><i class="fas fa-info-circle"></i> Detalle Productos</button>
+  <button class="nav-item" id="btn-cotizaciones" type="button"><i class="fas fa-file-invoice-dollar"></i> Cotizaciones</button>
+  <button class="nav-item" id="btn-clientes" type="button"><i class="fas fa-address-book"></i> Clientes</button>
+  <button class="nav-item" id="btn-generar-cotizacion" type="button"><i class="fas fa-file-signature"></i> Generar Cotización</button>
       </nav>
     </aside>
     <main class="main-content" id="main-content">

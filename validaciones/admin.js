@@ -1,3 +1,4 @@
+addMenuHandler('btn-proveedores', 'proveedores.php');
 
 function setActiveMenu(id) {
   document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
@@ -44,7 +45,7 @@ addMenuHandler('btn-roles', 'roles.php', '../validaciones/roles.js');
 addMenuHandler('btn-empleados', 'empleados.php', '../validaciones/empleados.js');
 addMenuHandler('btn-usuarios', 'usuarios.php');
 addMenuHandler('btn-productos', 'productos.php');
-addMenuHandler('btn-detalle-productos', 'DetalleProductosCopia.php');
+addMenuHandler('btn-detalle-productos', 'detalleProductos.php');
 addMenuHandler('btn-cotizaciones', 'cotizaciones.php');
 addMenuHandler('btn-clientes', 'clientes.php');
 addMenuHandler('btn-generar-cotizacion', 'generarCotizacion.php');
