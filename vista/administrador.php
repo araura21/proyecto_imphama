@@ -42,13 +42,6 @@
     </main>
   <!-- Eliminado: la navegación ahora es dinámica vía admin.js -->
   <script src="../validaciones/admin.js"></script>
-  <script>
-    // Cargar la sección de roles automáticamente al iniciar sesión
-    window.addEventListener('DOMContentLoaded', function() {
-      var btnRoles = document.getElementById('btn-roles');
-      if (btnRoles) btnRoles.click();
-    });
-  </script>
   </div>
 </body>
 </html>
