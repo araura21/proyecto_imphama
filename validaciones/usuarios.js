@@ -1,7 +1,53 @@
 // usuarios.js - CRUD y paginación para usuarios
 
 window.initUsuarios = function() {
+  cargarEmpleadosYRoles();
   cargarUsuarios();
+// Cargar empleados y roles en el formulario y asignar rol automáticamente
+function cargarEmpleadosYRoles() {
+  // Cargar empleados
+  fetch('../controlador/empleadosController.php?action=listar')
+    .then(r => r.json())
+    .then(data => {
+      if (data.success) {
+        const select = document.getElementById('idEmpleado');
+        select.innerHTML = '<option value="">Seleccione...</option>';
+        data.empleados.forEach(emp => {
+          // Suponiendo que el campo rol existe en el objeto emp
+          select.innerHTML += `<option value="${emp.idEmpleado}" data-rol="${emp.rol ?? ''}">${emp.nombre} ${emp.apellido} (${emp.cedula})</option>`;
+        });
+      }
+    });
+  // Cargar roles
+  fetch('../controlador/rolesController.php?action=listar')
+    .then(r => r.json())
+    .then(data => {
+      if (data.success) {
+        window._rolesUsuarios = data.roles;
+      }
+    });
+  // Evento para actualizar el rol automáticamente
+  document.getElementById('idEmpleado').addEventListener('change', function() {
+    const idEmpleado = this.value;
+    if (!idEmpleado) {
+      document.getElementById('rolEmpleado').value = '';
+      return;
+    }
+    // Buscar el rol asignado en la tabla usuarios
+    fetch('../controlador/usuariosController.php?action=listar')
+      .then(r => r.json())
+      .then(data => {
+        if (data.success) {
+          const usuario = data.usuarios.find(u => u.cedula && this.options[this.selectedIndex].text.includes(u.cedula));
+          if (usuario && usuario.rol) {
+            document.getElementById('rolEmpleado').value = usuario.rol;
+          } else {
+            document.getElementById('rolEmpleado').value = '';
+          }
+        }
+      });
+  });
+}
 
   // Mensaje
   let msg = document.getElementById('msg-usuarios');

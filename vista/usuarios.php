@@ -9,19 +9,11 @@
         <label for="idEmpleado" style="font-weight:600;">Empleado (Cédula):</label>
         <select id="idEmpleado" name="idEmpleado" required style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;">
           <option value="">Seleccione...</option>
-          <!-- Aquí se cargarían dinámicamente los empleados -->
-          <option value="12345678">Juan Pérez (12345678)</option>
-          <option value="87654321">Ana García (87654321)</option>
         </select>
       </div>
       <div>
-        <label for="idRol" style="font-weight:600;">Rol:</label>
-        <select id="idRol" name="idRol" required style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;">
-          <option value="">Seleccione...</option>
-          <!-- Aquí se cargarían dinámicamente los roles -->
-          <option value="1">Administrador</option>
-          <option value="2">Bodeguero</option>
-        </select>
+        <label style="font-weight:600;">Rol:</label>
+        <input type="text" id="rolEmpleado" name="rolEmpleado" readonly style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc; background:#f4f4f4; color:#333;" placeholder="Seleccione un empleado" />
       </div>
       <div>
         <label for="estado" style="font-weight:600;">Estado:</label>

@@ -1,6 +1,65 @@
 
 // Permite inicializar roles desde admin.js
 window.initRoles = function() {
+  // Modal de edición: solo se crea una vez y se reutiliza
+  let modal = document.getElementById('modal-editar-rol');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'modal-editar-rol';
+    modal.style.display = 'none';
+    modal.style.position = 'fixed';
+    modal.style.top = '0';
+    modal.style.left = '0';
+    modal.style.width = '100vw';
+    modal.style.height = '100vh';
+    modal.style.background = 'rgba(0,0,0,0.3)';
+    modal.style.zIndex = '9999';
+    modal.innerHTML = `
+      <div style="background:#fff; max-width:400px; margin:60px auto; padding:24px 18px 18px 18px; border-radius:8px; box-shadow:0 4px 24px rgba(0,0,0,0.13); position:relative;">
+        <h3 style="margin-bottom:18px;">Editar Rol</h3>
+        <form id="formEditarRol">
+          <input type="hidden" id="editIdRol">
+          <div style="margin-bottom:12px;">
+            <label for="editNombreRol" style="font-weight:600;">Nombre:</label>
+            <input id="editNombreRol" name="editNombreRol" type="text" required style="width:100%; padding:7px; border-radius:4px; border:1px solid #ccc;">
+          </div>
+          <div style="margin-bottom:12px;">
+            <label style="font-weight:600;">Accesos:</label>
+            <div id="editAccesosContainer" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:6px;"></div>
+          </div>
+          <div style="display:flex; justify-content:flex-end; gap:10px;">
+            <button type="button" id="btnCancelarEditarRol" style="background:#eee; color:#333; border:none; padding:7px 16px; border-radius:4px;">Cancelar</button>
+            <button type="submit" style="background:#2980b9; color:#fff; border:none; padding:7px 16px; border-radius:4px;">Guardar</button>
+          </div>
+        </form>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    // Cerrar modal
+    document.getElementById('btnCancelarEditarRol').onclick = function() {
+      modal.style.display = 'none';
+    };
+    // Enviar edición
+    document.getElementById('formEditarRol').onsubmit = function(e) {
+      e.preventDefault();
+      const idRol = document.getElementById('editIdRol').value;
+      const nombre = document.getElementById('editNombreRol').value.trim();
+      const accesos = Array.from(document.querySelectorAll('#editAccesosContainer input[name="editAccesos[]"]:checked')).map(cb => cb.value);
+      fetch('../controlador/roles/editarRol.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'idRol=' + encodeURIComponent(idRol) + '&nombre=' + encodeURIComponent(nombre) + '&permisos=' + encodeURIComponent(JSON.stringify(accesos))
+      })
+      .then(r => r.json())
+      .then(data => {
+        alert(data.message);
+        modal.style.display = 'none';
+        cargarRoles();
+      });
+    };
+  }
+  // Modal de edición: siempre se elimina y se vuelve a crear para evitar duplicados y eventos viejos
+    // ...sin modal de edición...
 
   let rolesCache = [];
   function cargarRolesYCache(cb) {
@@ -40,7 +99,7 @@ window.initRoles = function() {
       return;
     }
     const accesos = Array.from(document.querySelectorAll('input[name="accesos[]"]:checked')).map(cb => cb.value);
-  fetch('../controlador/rolesController.php?action=agregar', {
+  fetch('../controlador/roles/agregarRol.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: 'nombre=' + encodeURIComponent(nombre) + '&permisos=' + encodeURIComponent(JSON.stringify(accesos))
@@ -140,8 +199,8 @@ function cargarRoles() {
               <td style="padding:10px; border:1px solid #ddd;">${rol.nombre}</td>
               <td style="padding:10px; border:1px solid #ddd;">${accesos}</td>
               <td style="padding:10px; border:1px solid #ddd;">
-                <button style="background:#2980b9; color:#fff; border:none; padding:6px 12px; border-radius:4px; margin-right:6px; cursor:pointer;">Editar</button>
-                <button style="background:#e74c3c; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;">Eliminar</button>
+                <button class="btn-editar-rol" data-id="${rol.idRol}" data-nombre="${rol.nombre}" data-permisos='${rol.permisos}' style="background:#2980b9; color:#fff; border:none; padding:6px 12px; border-radius:4px; margin-right:6px; cursor:pointer;">Editar</button>
+                <button class="btn-eliminar-rol" data-id="${rol.idRol}" style="background:#e74c3c; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;">Eliminar</button>
               </td>
             </tr>`;
           });
@@ -151,6 +210,74 @@ function cargarRoles() {
           const tablaDiv = document.createElement('div');
           tablaDiv.innerHTML = html;
           document.getElementById('tabla-roles').appendChild(tablaDiv);
+
+          // Eventos para editar
+          tablaDiv.querySelectorAll('.btn-editar-rol').forEach(btn => {
+            btn.addEventListener('click', function() {
+              const idRol = this.getAttribute('data-id');
+              const nombre = this.getAttribute('data-nombre');
+              const permisos = this.getAttribute('data-permisos');
+              // Referencia al modal y campos SIEMPRE dentro del evento
+              let modal = document.getElementById('modal-editar-rol');
+              if (!modal) return; // Si no existe, no hacer nada
+              document.getElementById('editIdRol').value = idRol;
+              document.getElementById('editNombreRol').value = nombre;
+              // Renderizar accesos
+              const accesosArr = [
+                {val:'roles', label:'Roles'},
+                {val:'empleados', label:'Empleados'},
+                {val:'usuarios', label:'Usuarios'},
+                {val:'productos', label:'Productos'},
+                {val:'detalleProductos', label:'Detalle Productos'},
+                {val:'cotizaciones', label:'Cotizaciones'},
+                {val:'clientes', label:'Clientes'},
+                {val:'generarCotizacion', label:'Generar Cotización'}
+              ];
+              let permisosArr = [];
+              try {
+                const parsed = JSON.parse(permisos);
+                if (Array.isArray(parsed)) permisosArr = parsed;
+                else if (typeof parsed === 'object' && parsed !== null) permisosArr = Object.keys(parsed).filter(k => parsed[k]);
+              } catch(e) {}
+              const container = document.getElementById('editAccesosContainer');
+              if (container) {
+                container.innerHTML = '';
+                accesosArr.forEach(acc => {
+                  const id = 'editAcceso_' + acc.val;
+                  const cb = document.createElement('input');
+                  cb.type = 'checkbox';
+                  cb.id = id;
+                  cb.name = 'editAccesos[]';
+                  cb.value = acc.val;
+                  if (permisosArr.includes(acc.val)) cb.checked = true;
+                  const label = document.createElement('label');
+                  label.htmlFor = id;
+                  label.textContent = acc.label;
+                  label.style.marginRight = '12px';
+                  container.appendChild(cb);
+                  container.appendChild(label);
+                });
+              }
+              modal.style.display = 'block';
+            });
+          });
+          // Eventos para eliminar
+          tablaDiv.querySelectorAll('.btn-eliminar-rol').forEach(btn => {
+            btn.addEventListener('click', function() {
+              const idRol = this.getAttribute('data-id');
+              if (!confirm('¿Seguro que deseas eliminar este rol?')) return;
+              fetch('../controlador/roles/eliminarRol.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'idRol=' + encodeURIComponent(idRol)
+              })
+              .then(r => r.json())
+              .then(data => {
+                alert(data.message);
+                cargarRoles();
+              });
+            });
+          });
           // Actualizar info de página
           const totalPages = Math.ceil(roles.length / pageSize) || 1;
           pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;

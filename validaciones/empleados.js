@@ -3,6 +3,82 @@
 window.initEmpleados = function() {
   cargarEmpleados();
 
+  // Modal de edición: solo se crea una vez y se reutiliza
+  let modal = document.getElementById('modal-editar-empleado');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'modal-editar-empleado';
+    modal.style.display = 'none';
+    modal.style.position = 'fixed';
+    modal.style.top = '0';
+    modal.style.left = '0';
+    modal.style.width = '100vw';
+    modal.style.height = '100vh';
+    modal.style.background = 'rgba(0,0,0,0.3)';
+    modal.style.zIndex = '9999';
+    modal.innerHTML = `
+      <div style="background:#fff; max-width:400px; margin:60px auto; padding:24px 18px 18px 18px; border-radius:8px; box-shadow:0 4px 24px rgba(0,0,0,0.13); position:relative;">
+        <h3 style="margin-bottom:18px;">Editar Empleado</h3>
+        <form id="formEditarEmpleado">
+          <input type="hidden" id="editIdEmpleado">
+          <div style="margin-bottom:12px;">
+            <label for="editNombreEmpleado" style="font-weight:600;">Nombre:</label>
+            <input id="editNombreEmpleado" name="editNombreEmpleado" type="text" required style="width:100%; padding:7px; border-radius:4px; border:1px solid #ccc;">
+          </div>
+          <div style="margin-bottom:12px;">
+            <label for="editApellidoEmpleado" style="font-weight:600;">Apellido:</label>
+            <input id="editApellidoEmpleado" name="editApellidoEmpleado" type="text" required style="width:100%; padding:7px; border-radius:4px; border:1px solid #ccc;">
+          </div>
+          <div style="margin-bottom:12px;">
+            <label for="editCedulaEmpleado" style="font-weight:600;">Cédula:</label>
+            <input id="editCedulaEmpleado" name="editCedulaEmpleado" type="text" required style="width:100%; padding:7px; border-radius:4px; border:1px solid #ccc;">
+          </div>
+          <div style="margin-bottom:12px;">
+            <label for="editTelefonoEmpleado" style="font-weight:600;">Teléfono:</label>
+            <input id="editTelefonoEmpleado" name="editTelefonoEmpleado" type="text" required style="width:100%; padding:7px; border-radius:4px; border:1px solid #ccc;">
+          </div>
+          <div style="margin-bottom:12px;">
+            <label for="editCorreoEmpleado" style="font-weight:600;">Correo:</label>
+            <input id="editCorreoEmpleado" name="editCorreoEmpleado" type="email" required style="width:100%; padding:7px; border-radius:4px; border:1px solid #ccc;">
+          </div>
+          <div style="display:flex; justify-content:flex-end; gap:10px;">
+            <button type="button" id="btnCancelarEditarEmpleado" style="background:#eee; color:#333; border:none; padding:7px 16px; border-radius:4px;">Cancelar</button>
+            <button type="submit" style="background:#2980b9; color:#fff; border:none; padding:7px 16px; border-radius:4px;">Guardar</button>
+          </div>
+        </form>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    // Cerrar modal
+    document.getElementById('btnCancelarEditarEmpleado').onclick = function() {
+      modal.style.display = 'none';
+    };
+    // Enviar edición
+    document.getElementById('formEditarEmpleado').onsubmit = function(e) {
+      e.preventDefault();
+      const id = document.getElementById('editIdEmpleado').value;
+      const nombre = document.getElementById('editNombreEmpleado').value.trim();
+      const apellido = document.getElementById('editApellidoEmpleado').value.trim();
+      const cedula = document.getElementById('editCedulaEmpleado').value.trim();
+      const telefono = document.getElementById('editTelefonoEmpleado').value.trim();
+      const correo = document.getElementById('editCorreoEmpleado').value.trim();
+      fetch('../controlador/empleados/editarEmpleado.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `idEmpleado=${encodeURIComponent(id)}&nombre=${encodeURIComponent(nombre)}&apellido=${encodeURIComponent(apellido)}&cedula=${encodeURIComponent(cedula)}&telefono=${encodeURIComponent(telefono)}&correo=${encodeURIComponent(correo)}`
+      })
+      .then(r => r.json())
+      .then(data => {
+        alert(data.success ? 'Empleado actualizado correctamente.' : 'Error al actualizar: ' + (data.error || ''));
+        if (data.success) {
+          modal.style.display = 'none';
+          cargarEmpleados();
+        }
+      })
+      .catch(() => alert('Error de conexión con el servidor.'));
+    };
+  }
+
   // Mensaje
   let msg = document.getElementById('msg-empleados');
   if (!msg) {
@@ -20,7 +96,7 @@ window.initEmpleados = function() {
     const cedula = document.getElementById('cedula').value.trim();
     const telefono = document.getElementById('telefono').value.trim();
     const correo = document.getElementById('correo').value.trim();
-    fetch('../controlador/empleadosController.php?action=agregar', {
+    fetch('../controlador/empleados/agregarEmpleado.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `nombre=${encodeURIComponent(nombre)}&apellido=${encodeURIComponent(apellido)}&cedula=${encodeURIComponent(cedula)}&telefono=${encodeURIComponent(telefono)}&correo=${encodeURIComponent(correo)}`
@@ -115,8 +191,8 @@ function cargarEmpleados() {
               <td style=\"padding:10px; border:1px solid #ddd;\">${emp.telefono}</td>
               <td style=\"padding:10px; border:1px solid #ddd; max-width:380px;\">${emp.correo}</td>
               <td style=\"padding:10px; border:1px solid #ddd;\">
-                <button style=\"background:#27ae60; color:#fff; border:none; padding:6px 12px; border-radius:4px; margin-right:6px; cursor:pointer;\">Editar</button>
-                <button style=\"background:#e74c3c; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;\">Eliminar</button>
+                <button class=\"btn-editar-empleado\" data-id=\"${emp.idEmpleado}\" style=\"background:#27ae60; color:#fff; border:none; padding:6px 12px; border-radius:4px; margin-right:6px; cursor:pointer;\">Editar</button>
+                <button class=\"btn-eliminar-empleado\" data-id=\"${emp.idEmpleado}\" style=\"background:#e74c3c; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;\">Eliminar</button>
               </td>
             </tr>`;
           });
@@ -131,6 +207,41 @@ function cargarEmpleados() {
           pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
           btnPrev.disabled = currentPage === 1;
           btnNext.disabled = currentPage === totalPages;
+          // Asignar eventos SIEMPRE después de renderizar la tabla
+          setTimeout(() => {
+            tablaDiv.querySelectorAll('.btn-editar-empleado').forEach(btn => {
+              btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const empleado = empleados.find(e => e.idEmpleado == id);
+                if (!empleado) return;
+                // Precargar datos en el modal
+                document.getElementById('editIdEmpleado').value = empleado.idEmpleado;
+                document.getElementById('editNombreEmpleado').value = empleado.nombre;
+                document.getElementById('editApellidoEmpleado').value = empleado.apellido;
+                document.getElementById('editCedulaEmpleado').value = empleado.cedula;
+                document.getElementById('editTelefonoEmpleado').value = empleado.telefono;
+                document.getElementById('editCorreoEmpleado').value = empleado.correo;
+                document.getElementById('modal-editar-empleado').style.display = 'block';
+              });
+            });
+            tablaDiv.querySelectorAll('.btn-eliminar-empleado').forEach(btn => {
+              btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                if (!confirm('¿Seguro que deseas eliminar este empleado?')) return;
+                fetch('../controlador/empleados/eliminarEmpleado.php', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                  body: `idEmpleado=${encodeURIComponent(id)}`
+                })
+                .then(r => r.json())
+                .then(data => {
+                  alert(data.success ? 'Empleado eliminado correctamente.' : 'Error al eliminar: ' + (data.error || ''));
+                  if (data.success) cargarEmpleados();
+                })
+                .catch(() => alert('Error de conexión con el servidor.'));
+              });
+            });
+          }, 50);
         }
         // Eventos
         select.addEventListener('change', function() {
@@ -152,6 +263,41 @@ function cargarEmpleados() {
           }
         });
         renderTabla();
+        // Delegar eventos para editar y eliminar
+        setTimeout(() => {
+          document.querySelectorAll('.btn-editar-empleado').forEach(btn => {
+            btn.addEventListener('click', function() {
+              const id = this.getAttribute('data-id');
+              const empleado = empleados.find(e => e.idEmpleado == id);
+              if (!empleado) return;
+              // Precargar datos en el modal
+              document.getElementById('editIdEmpleado').value = empleado.idEmpleado;
+              document.getElementById('editNombreEmpleado').value = empleado.nombre;
+              document.getElementById('editApellidoEmpleado').value = empleado.apellido;
+              document.getElementById('editCedulaEmpleado').value = empleado.cedula;
+              document.getElementById('editTelefonoEmpleado').value = empleado.telefono;
+              document.getElementById('editCorreoEmpleado').value = empleado.correo;
+              document.getElementById('modal-editar-empleado').style.display = 'block';
+            });
+          });
+          document.querySelectorAll('.btn-eliminar-empleado').forEach(btn => {
+            btn.addEventListener('click', function() {
+              const id = this.getAttribute('data-id');
+              if (!confirm('¿Seguro que deseas eliminar este empleado?')) return;
+              fetch('../controlador/empleados/eliminarEmpleado.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `idEmpleado=${encodeURIComponent(id)}`
+              })
+              .then(r => r.json())
+              .then(data => {
+                alert(data.success ? 'Empleado eliminado correctamente.' : 'Error al eliminar: ' + (data.error || ''));
+                if (data.success) cargarEmpleados();
+              })
+              .catch(() => alert('Error de conexión con el servidor.'));
+            });
+          });
+        }, 100);
       }
     });
 }
