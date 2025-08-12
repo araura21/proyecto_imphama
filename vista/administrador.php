@@ -9,6 +9,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+  <?php
+    session_start();
+    // Ejemplo: $_SESSION['permisos'] = ['dashboard', 'auditoria', 'roles', 'empleados'];
+    // Si no existen permisos, por defecto todos desactivados
+    $permisos = isset($_SESSION['permisos']) ? $_SESSION['permisos'] : [];
+    function btnDisabled($permiso) {
+      global $permisos;
+      return in_array($permiso, $permisos) ? '' : 'disabled-panel';
+    }
+  ?>
+  <style>
+    .disabled-panel {
+      opacity: 0.5 !important;
+      pointer-events: none !important;
+      filter: grayscale(0.7);
+    }
+  </style>
   <header style="display:flex; justify-content:space-between; align-items:center; background: linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(30,41,59,0.85) 100%); color:#fff; padding:0.7em 2em; position:fixed; top:0; left:0; right:0; z-index:100; height:70px;">
     <div style="display:flex; align-items:center;">
       <img src="assets/img/logo.png" alt="IMPHAMA Logo" style="height:40px; margin-right:14px; object-fit:contain; image-rendering:auto;">
@@ -25,17 +42,17 @@
   <div class="admin-wrapper" style="display:flex; min-height:100vh; padding-top:70px;">
     <aside class="sidebar" style="margin-top:70px;">
       <nav class="nav" style="margin-top:1em;">
-        <button class="nav-item" id="btn-dashboard" type="button"><i class="fas fa-tachometer-alt"></i> Dashboard</button>
-        <button class="nav-item" id="btn-auditoria" type="button"><i class="fas fa-search"></i> Auditoria</button>
-        <button class="nav-item" id="btn-roles" type="button"><i class="fas fa-user-shield"></i> Roles</button>
-        <button class="nav-item" id="btn-empleados" type="button"><i class="fas fa-users"></i> Empleados</button>
-        <button class="nav-item" id="btn-usuarios" type="button"><i class="fas fa-user"></i> Usuarios</button>
-  <button class="nav-item" id="btn-productos" type="button"><i class="fas fa-box"></i> Productos</button>
-  <button class="nav-item" id="btn-proveedores" type="button"><i class="fas fa-handshake"></i> Proveedores</button>
-  <button class="nav-item" id="btn-detalle-productos" type="button"><i class="fas fa-info-circle"></i> Detalle Productos</button>
-  <button class="nav-item" id="btn-cotizaciones" type="button"><i class="fas fa-file-invoice-dollar"></i> Cotizaciones</button>
-  <button class="nav-item" id="btn-clientes" type="button"><i class="fas fa-address-book"></i> Clientes</button>
-  <button class="nav-item" id="btn-generar-cotizacion" type="button"><i class="fas fa-file-signature"></i> Generar Cotización</button>
+        <button class="nav-item <?php echo btnDisabled('dashboard'); ?>" id="btn-dashboard" type="button"><i class="fas fa-tachometer-alt"></i> Dashboard</button>
+        <button class="nav-item <?php echo btnDisabled('auditoria'); ?>" id="btn-auditoria" type="button"><i class="fas fa-search"></i> Auditoria</button>
+        <button class="nav-item <?php echo btnDisabled('roles'); ?>" id="btn-roles" type="button"><i class="fas fa-user-shield"></i> Roles</button>
+        <button class="nav-item <?php echo btnDisabled('empleados'); ?>" id="btn-empleados" type="button"><i class="fas fa-users"></i> Empleados</button>
+        <button class="nav-item <?php echo btnDisabled('usuarios'); ?>" id="btn-usuarios" type="button"><i class="fas fa-user"></i> Usuarios</button>
+        <button class="nav-item <?php echo btnDisabled('productos'); ?>" id="btn-productos" type="button"><i class="fas fa-box"></i> Productos</button>
+        <button class="nav-item <?php echo btnDisabled('proveedores'); ?>" id="btn-proveedores" type="button"><i class="fas fa-handshake"></i> Proveedores</button>
+        <button class="nav-item <?php echo btnDisabled('detalleProductos'); ?>" id="btn-detalle-productos" type="button"><i class="fas fa-info-circle"></i> Detalle Productos</button>
+        <button class="nav-item <?php echo btnDisabled('cotizaciones'); ?>" id="btn-cotizaciones" type="button"><i class="fas fa-file-invoice-dollar"></i> Cotizaciones</button>
+        <button class="nav-item <?php echo btnDisabled('clientes'); ?>" id="btn-clientes" type="button"><i class="fas fa-address-book"></i> Clientes</button>
+        <button class="nav-item <?php echo btnDisabled('generarCotizacion'); ?>" id="btn-generar-cotizacion" type="button"><i class="fas fa-file-signature"></i> Generar Cotización</button>
       </nav>
     </aside>
     <main class="main-content" id="main-content">

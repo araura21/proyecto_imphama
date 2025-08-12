@@ -20,9 +20,39 @@
         <tr>
           <td>
             <label class="roles-checkbox-label">
+              <input type="checkbox" name="accesos[]" value="dashboard">
+              <i class="fas fa-tachometer-alt" style="color:#2980b9;"></i>
+              <span>Dashboard</span>
+            </label>
+          </td>
+          <td>
+          <label class="roles-checkbox-label">
+              <input type="checkbox" name="accesos[]" value="auditoria">
+              <i class="fas fa-search" style="color:#2980b9;"></i>
+              <span>Auditoria</span>
+            </label>
+          </td>
+          <td>
+            <label class="roles-checkbox-label">
               <input type="checkbox" name="accesos[]" value="roles">
               <i class="fas fa-user-shield" style="color:#2980b9;"></i>
               <span>Roles</span>
+            </label>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label class="roles-checkbox-label">
+              <input type="checkbox" name="accesos[]" value="usuarios">
+              <i class="fas fa-user" style="color:#8e44ad;"></i>
+              <span>Usuarios</span>
+            </label>
+          </td>
+          <td>
+            <label class="roles-checkbox-label">
+              <input type="checkbox" name="accesos[]" value="proveedores">
+              <i class="fas fa-handshake" style="color:#2980b9;"></i>
+              <span>Proveedores</span>
             </label>
           </td>
           <td>
@@ -34,11 +64,13 @@
           </td>
           <td>
             <label class="roles-checkbox-label">
-              <input type="checkbox" name="accesos[]" value="usuarios">
-              <i class="fas fa-user" style="color:#8e44ad;"></i>
-              <span>Usuarios</span>
+              <input type="checkbox" name="accesos[]" value="clientes">
+              <i class="fas fa-address-book" style="color:#34495e;"></i>
+              <span>Clientes</span>
             </label>
           </td>
+        </tr>
+        <tr>
           <td>
             <label class="roles-checkbox-label">
               <input type="checkbox" name="accesos[]" value="productos">
@@ -46,8 +78,6 @@
               <span>Productos</span>
             </label>
           </td>
-        </tr>
-        <tr>
           <td>
             <label class="roles-checkbox-label">
               <input type="checkbox" name="accesos[]" value="detalleProductos">
@@ -60,13 +90,6 @@
               <input type="checkbox" name="accesos[]" value="cotizaciones">
               <i class="fas fa-file-invoice-dollar" style="color:#c0392b;"></i>
               <span>Cotizaciones</span>
-            </label>
-          </td>
-          <td>
-            <label class="roles-checkbox-label">
-              <input type="checkbox" name="accesos[]" value="clientes">
-              <i class="fas fa-address-book" style="color:#34495e;"></i>
-              <span>Clientes</span>
             </label>
           </td>
           <td>
