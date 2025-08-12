@@ -13,11 +13,15 @@ function cargarEmpleadosYRoles() {
         const select = document.getElementById('idEmpleado');
         select.innerHTML = '<option value="">Seleccione...</option>';
         data.empleados.forEach(emp => {
-          select.innerHTML += `<option value="${emp.idEmpleado}" data-rol="${emp.rol ?? ''}">${emp.nombre} ${emp.apellido} (${emp.cedula})</option>`;
+          select.innerHTML += `<option value="${emp.idEmpleado}" data-rol="${emp.rol ?? ''}" data-correo="${emp.correo ?? ''}">${emp.nombre} ${emp.apellido} (${emp.cedula})</option>`;
         });
 
-  // Ya no se valida si el empleado está registrado como usuario al seleccionar
-  select.onchange = null;
+        // Autocompletar usuario con correo del empleado seleccionado
+        select.onchange = function() {
+          const selected = select.options[select.selectedIndex];
+          const correo = selected.getAttribute('data-correo') || '';
+          document.getElementById('usuario').value = correo;
+        };
       }
     });
   // Cargar roles y llenar el select de roles
@@ -56,6 +60,21 @@ function cargarEmpleadosYRoles() {
     document.querySelector('h2').insertAdjacentElement('afterend', msg);
   }
 
+  // Validación en tiempo real de contraseña
+  const passwordInput = document.getElementById('password');
+  passwordInput.oninput = function() {
+    const val = passwordInput.value;
+    if (val.length !== 10) {
+      passwordInput.setCustomValidity('La contraseña debe tener exactamente 10 caracteres.');
+    } else if (!/[0-9]/.test(val)) {
+      passwordInput.setCustomValidity('La contraseña debe contener al menos un número.');
+    } else if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(val)) {
+      passwordInput.setCustomValidity('La contraseña debe contener al menos un caracter especial.');
+    } else {
+      passwordInput.setCustomValidity('');
+    }
+  };
+
   document.getElementById('formAgregarUsuario').addEventListener('submit', function(e) {
     e.preventDefault();
     const idEmpleado = document.getElementById('idEmpleado').value;
@@ -69,14 +88,10 @@ function cargarEmpleadosYRoles() {
       msg.style.color = 'red';
       return;
     }
-    if (password.length < 10) {
-      msg.textContent = 'La contraseña debe tener al menos 10 caracteres.';
+    if (passwordInput.validationMessage) {
+      msg.textContent = passwordInput.validationMessage;
       msg.style.color = 'red';
-      return;
-    }
-    if (!/[0-9]/.test(password) || !/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
-      msg.textContent = 'La contraseña debe contener al menos un número y un caracter especial.';
-      msg.style.color = 'red';
+      passwordInput.reportValidity();
       return;
     }
     // Si pasa validaciones, enviar
@@ -140,7 +155,7 @@ function cargarUsuarios() {
         controls.appendChild(btnNext);
 
         // Modal edición y eliminar
-        function abrirModalEditar(usuario) {
+  function abrirModalEditar(usuario) {
           // Cargar empleados y roles en selects del modal
           fetch('../controlador/empleadosController.php?action=listar')
             .then(r => r.json())
@@ -149,10 +164,29 @@ function cargarUsuarios() {
               selEmp.innerHTML = '<option value="">Seleccione...</option>';
               let empActual = null;
               dataEmp.empleados.forEach(emp => {
-                selEmp.innerHTML += `<option value=\"${emp.idEmpleado}\">${emp.nombre} ${emp.apellido} (${emp.cedula})</option>`;
+                selEmp.innerHTML += `<option value=\"${emp.idEmpleado}\" data-correo=\"${emp.correo ?? ''}\">${emp.nombre} ${emp.apellido} (${emp.cedula})</option>`;
                 if (emp.idEmpleado == usuario.idEmpleado) empActual = emp;
               });
-              setTimeout(() => { selEmp.value = usuario.idEmpleado; }, 0);
+              setTimeout(() => { 
+                selEmp.value = usuario.idEmpleado;
+                // Autocompletar usuario con correo del empleado seleccionado y bloquear edición
+                const selected = selEmp.options[selEmp.selectedIndex];
+                const correo = selected.getAttribute('data-correo') || '';
+                const editUsuario = document.getElementById('edit_usuario');
+                editUsuario.value = correo;
+                editUsuario.readOnly = true;
+                editUsuario.style.background = '#f4f4f4';
+                editUsuario.style.color = '#333';
+              }, 0);
+              selEmp.onchange = function() {
+                const selected = selEmp.options[selEmp.selectedIndex];
+                const correo = selected.getAttribute('data-correo') || '';
+                const editUsuario = document.getElementById('edit_usuario');
+                editUsuario.value = correo;
+                editUsuario.readOnly = true;
+                editUsuario.style.background = '#f4f4f4';
+                editUsuario.style.color = '#333';
+              };
               // Mostrar info en cabecera usando los datos del usuario
               let info = '';
               if (usuario.nombreEmpleado && usuario.apellidoEmpleado && usuario.cedula) {
@@ -196,10 +230,27 @@ function cargarUsuarios() {
               });
           };
           document.getElementById('edit_idUsuario').value = usuario.idUsuario;
-          document.getElementById('edit_usuario').value = usuario.usuario;
+          // El usuario se autocompleta arriba
           document.getElementById('edit_password').value = '';
           document.getElementById('edit_estado').value = usuario.estado;
           document.getElementById('modalEditarUsuario').style.display = 'flex';
+
+          // Validación en tiempo real de contraseña en edición
+          const editPasswordInput = document.getElementById('edit_password');
+          editPasswordInput.oninput = function() {
+            const val = editPasswordInput.value;
+            if (val.length > 0 && val.length < 10) {
+              editPasswordInput.setCustomValidity('La contraseña debe tener al menos 10 caracteres.');
+            } else if (val.length > 0 && !/[0-9]/.test(val)) {
+              editPasswordInput.setCustomValidity('La contraseña debe contener al menos un número.');
+            } else if (val.length > 0 && !/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(val)) {
+              editPasswordInput.setCustomValidity('La contraseña debe contener al menos un caracter especial.');
+            } else if (val.length === 0) {
+              editPasswordInput.setCustomValidity(''); // Permitir vacío para no cambiar
+            } else {
+              editPasswordInput.setCustomValidity('');
+            }
+          };
         }
         document.getElementById('cerrarModalEditarUsuario').onclick = function() {
           document.getElementById('modalEditarUsuario').style.display = 'none';
@@ -213,6 +264,19 @@ function cargarUsuarios() {
           const usuario = document.getElementById('edit_usuario').value;
           const password = document.getElementById('edit_password').value;
           const estado = document.getElementById('edit_estado').value;
+          const editPasswordInput = document.getElementById('edit_password');
+          const msg = document.getElementById('msg-editar-usuario');
+          if (usuario.length === 0 || usuario.length > 50) {
+            msg.textContent = 'El usuario debe tener máximo 50 caracteres.';
+            msg.style.color = 'red';
+            return;
+          }
+          if (editPasswordInput.value.length > 0 && editPasswordInput.validationMessage) {
+            msg.textContent = editPasswordInput.validationMessage;
+            msg.style.color = 'red';
+            editPasswordInput.reportValidity();
+            return;
+          }
           fetch('../controlador/usuarios/editarUsuario.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -220,7 +284,6 @@ function cargarUsuarios() {
           })
           .then(r => r.json())
           .then(data => {
-            const msg = document.getElementById('msg-editar-usuario');
             msg.textContent = data.message;
             msg.style.color = data.success ? 'green' : 'red';
             if (data.success) {
@@ -232,7 +295,6 @@ function cargarUsuarios() {
             }
           })
           .catch(() => {
-            const msg = document.getElementById('msg-editar-usuario');
             msg.textContent = 'Error de conexión con el servidor.';
             msg.style.color = 'red';
           });

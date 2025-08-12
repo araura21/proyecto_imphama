@@ -23,11 +23,11 @@
       </div>
       <div>
         <label for="usuario" style="font-weight:600;">Usuario (correo electrónico):</label>
-        <input type="text" id="usuario" name="usuario" required style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;" placeholder="Ingrese usuario" autocomplete="username" />
+        <input type="text" id="usuario" name="usuario" required style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;" autocomplete="username" />
       </div>
       <div>
         <label for="password" style="font-weight:600;">Contraseña:</label>
-        <input type="password" id="password" name="password" required style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;" placeholder="Ingrese contraseña" autocomplete="new-password" />
+  <input type="password" id="password" name="password" required minlength="10" maxlength="10" pattern="^(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=[\]{};':\\|,.<>/?])[A-Za-z0-9!@#$%^&*()_+\-=[\]{};':\\|,.<>/?]{10}$" style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;" placeholder="Ingrese contraseña de 10 caracteres" autocomplete="new-password" oninput="if(this.value.length!==10){this.setCustomValidity('La contraseña debe tener exactamente 10 caracteres.');}else if(!/[0-9]/.test(this.value)){this.setCustomValidity('La contraseña debe contener al menos un número.');}else if(!/[!@#$%^&*()_+\-=[\]{};':\\|,.<>/?]/.test(this.value)){this.setCustomValidity('La contraseña debe contener al menos un caracter especial.');}else{this.setCustomValidity('');}" />
       </div>
       <div>
         <label for="estado" style="font-weight:600;">Estado:</label>
@@ -63,11 +63,11 @@
         </div>
         <div>
           <label for="edit_usuario" style="font-weight:600; font-size:0.97rem;">Usuario (correo electrónico):</label>
-          <input type="text" id="edit_usuario" name="usuario" required style="width:100%; padding:6px; border-radius:4px; border:1px solid #ccc; font-size:0.97rem;" />
+          <input type="text" id="edit_usuario" name="usuario" required readonly style="width:100%; padding:6px; border-radius:4px; border:1px solid #ccc; font-size:0.97rem; background:#f4f4f4; color:#333;" />
         </div>
         <div>
           <label for="edit_password" style="font-weight:600; font-size:0.97rem;">Contraseña (dejar vacío para no cambiar):</label>
-          <input type="password" id="edit_password" name="password" style="width:100%; padding:6px; border-radius:4px; border:1px solid #ccc; font-size:0.97rem;" placeholder="Nueva contraseña (opcional)" autocomplete="new-password" />
+          <input type="password" id="edit_password" name="password" minlength="10" maxlength="10" pattern="^(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=[\]{};':\"\\|,.<>/?])[A-Za-z0-9!@#$%^&*()_+\-=[\]{};':\"\\|,.<>/?]{10}$" style="width:100%; padding:6px; border-radius:4px; border:1px solid #ccc; font-size:0.97rem;" placeholder="Nueva contraseña de 10 caracteres (opcional)" autocomplete="new-password" oninput="if(this.value.length>0&&this.value.length!==10){this.setCustomValidity('La contraseña debe tener exactamente 10 caracteres.');}else if(this.value.length>0&&!/[0-9]/.test(this.value)){this.setCustomValidity('La contraseña debe contener al menos un número.');}else if(this.value.length>0&&!/[!@#$%^&*()_+\-=[\]{};':\"\\|,.<>/?]/.test(this.value)){this.setCustomValidity('La contraseña debe contener al menos un caracter especial.');}else{this.setCustomValidity('');}" />
         </div>
         <div>
           <label for="edit_estado" style="font-weight:600; font-size:0.97rem;">Estado:</label>
