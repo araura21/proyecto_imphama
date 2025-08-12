@@ -25,6 +25,10 @@
         <label for="correo" style="font-weight:600;">Correo:</label>
         <input id="correo" type="email" name="correo" required style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;">
       </div>
+      <div>
+        <label for="direccion" style="font-weight:600;">Dirección:</label>
+        <input id="direccion" type="text" name="direccion" style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;">
+      </div>
     </div>
     <button type="submit" style="background:#34495e; color:#fff; border:none; padding:10px 24px; border-radius:6px; font-weight:600; font-size:1rem; cursor:pointer; box-shadow:0 2px 8px rgba(52,73,94,0.08);">Agregar Cliente</button>
   </form>
@@ -35,40 +39,16 @@
         <th style="padding:10px; border:1px solid #ddd;">Nombre</th>
         <th style="padding:10px; border:1px solid #ddd;">Apellido</th>
         <th style="padding:10px; border:1px solid #ddd;">Cédula</th>
-        <th style="padding:10px; border:1px solid #ddd;">Teléfono</th>
-        <th style="padding:10px; border:1px solid #ddd;">Correo</th>
-        <th style="padding:10px; border:1px solid #ddd;">Acciones</th>
+  <th style="padding:10px; border:1px solid #ddd;">Teléfono</th>
+  <th style="padding:10px; border:1px solid #ddd;">Correo</th>
+  <th style="padding:10px; border:1px solid #ddd;">Dirección</th>
+  <th style="padding:10px; border:1px solid #ddd;">Estado</th>
+  <th style="padding:10px; border:1px solid #ddd;">Acciones</th>
       </tr>
     </thead>
     <tbody>
-      <!-- Ejemplo de clientes, reemplazar por datos dinámicos -->
-      <tr>
-        <td style="padding:10px; border:1px solid #ddd;">1</td>
-        <td style="padding:10px; border:1px solid #ddd;">Carlos</td>
-        <td style="padding:10px; border:1px solid #ddd;">Ramírez</td>
-        <td style="padding:10px; border:1px solid #ddd;">1234567890</td>
-        <td style="padding:10px; border:1px solid #ddd;">0998765432</td>
-        <td style="padding:10px; border:1px solid #ddd;">carlos.ramirez@email.com</td>
-        <td style="padding:10px; border:1px solid #ddd;">
-          <button style="background:#27ae60; color:#fff; border:none; padding:6px 12px; border-radius:4px; margin-right:6px; cursor:pointer;">Editar</button>
-          <button style="background:#e74c3c; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;">Eliminar</button>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding:10px; border:1px solid #ddd;">2</td>
-        <td style="padding:10px; border:1px solid #ddd;">María</td>
-        <td style="padding:10px; border:1px solid #ddd;">López</td>
-        <td style="padding:10px; border:1px solid #ddd;">0987654321</td>
-        <td style="padding:10px; border:1px solid #ddd;">0981234567</td>
-        <td style="padding:10px; border:1px solid #ddd;">maria.lopez@email.com</td>
-        <td style="padding:10px; border:1px solid #ddd;">
-          <button style="background:#27ae60; color:#fff; border:none; padding:6px 12px; border-radius:4px; margin-right:6px; cursor:pointer;">Editar</button>
-          <button style="background:#e74c3c; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;">Eliminar</button>
-        </td>
-      </tr>
+      <!-- Las filas serán generadas dinámicamente por validaciones/clientes.js -->
     </tbody>
   </table>
 </div>
-<script>
-// Aquí iría la lógica JS para el CRUD, por ahora solo es maqueta visual
-</script>
+<script src="../validaciones/clientes.js"></script>

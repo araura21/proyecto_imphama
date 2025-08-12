@@ -51,7 +51,7 @@ addMenuHandler('btn-usuarios', 'usuarios.php', '../validaciones/usuarios.js');
 addMenuHandler('btn-productos', 'productos.php');
 addMenuHandler('btn-detalle-productos', 'detalleProductos.php');
 addMenuHandler('btn-cotizaciones', 'cotizaciones.php');
-addMenuHandler('btn-clientes', 'clientes.php');
+addMenuHandler('btn-clientes', 'clientes.php', '../validaciones/clientes.js');
 addMenuHandler('btn-generar-cotizacion', 'generarCotizacion.php');
 
 window.addEventListener('DOMContentLoaded', function() {
