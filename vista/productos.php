@@ -39,32 +39,11 @@
       </tr>
     </thead>
     <tbody>
-      <!-- Ejemplo de productos, reemplazar por datos dinámicos -->
-      <tr>
-        <td style="padding:10px; border:1px solid #ddd;">1</td>
-        <td style="padding:10px; border:1px solid #ddd;">Casco de Seguridad</td>
-        <td style="padding:10px; border:1px solid #ddd;"><img src="assets/img/productos/corporal/1.jpg" alt="Casco" style="height:40px; border-radius:4px;"></td>
-        <td style="padding:10px; border:1px solid #ddd;">Protección para la cabeza en ambientes industriales.</td>
-        <td style="padding:10px; border:1px solid #ddd;"><span style="background:#27ae60; color:#fff; padding:4px 12px; border-radius:4px; font-weight:600;">Activo</span></td>
-        <td style="padding:10px; border:1px solid #ddd;">
-          <button style="background:#2980b9; color:#fff; border:none; padding:6px 12px; border-radius:4px; margin-right:6px; cursor:pointer;">Editar</button>
-          <button style="background:#e74c3c; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;">Eliminar</button>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding:10px; border:1px solid #ddd;">2</td>
-        <td style="padding:10px; border:1px solid #ddd;">Guantes Anticorte</td>
-        <td style="padding:10px; border:1px solid #ddd;"><img src="assets/img/productos/manos/2.jpg" alt="Guantes" style="height:40px; border-radius:4px;"></td>
-        <td style="padding:10px; border:1px solid #ddd;">Guantes para protección contra cortes y abrasiones.</td>
-        <td style="padding:10px; border:1px solid #ddd;"><span style="background:#c0392b; color:#fff; padding:4px 12px; border-radius:4px; font-weight:600;">Inactivo</span></td>
-        <td style="padding:10px; border:1px solid #ddd;">
-          <button style="background:#2980b9; color:#fff; border:none; padding:6px 12px; border-radius:4px; margin-right:6px; cursor:pointer;">Editar</button>
-          <button style="background:#e74c3c; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;">Eliminar</button>
-        </td>
-      </tr>
+      <!-- Los productos se cargarán dinámicamente aquí -->
     </tbody>
   </table>
 </div>
+<script src="../validaciones/productos.js"></script>
 <script>
-// Aquí iría la lógica JS para el CRUD, por ahora solo es maqueta visual
+  window.initProductos && window.initProductos();
 </script>

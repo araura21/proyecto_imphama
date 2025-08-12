@@ -25,7 +25,7 @@ function addMenuHandler(btnId, phpFile, extraScript) {
       .then(function(response) { return response.text(); })
       .then(function(html) {
         main.innerHTML = html;
-        if (extraScript) {
+    if (extraScript) { 
           var script = document.createElement('script');
           script.src = extraScript;
           script.onload = function() {
@@ -33,9 +33,11 @@ function addMenuHandler(btnId, phpFile, extraScript) {
             if (btnId === 'btn-empleados' && window.initEmpleados) window.initEmpleados();
             if (btnId === 'btn-usuarios' && window.initUsuarios) window.initUsuarios();
             if (btnId === 'btn-proveedores' && window.initProveedores) window.initProveedores();
+      if (btnId === 'btn-productos' && window.initProductos) window.initProductos();
           };
           document.body.appendChild(script);
         }
+addMenuHandler('btn-productos', 'productos.php', '../validaciones/productos.js');
       })
       .catch(function(e) { main.innerHTML = '<div style=\"color:red; padding:2em;\">Error al cargar '+phpFile+'.</div>'; });
   });
