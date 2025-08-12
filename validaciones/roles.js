@@ -224,13 +224,16 @@ function cargarRoles() {
               document.getElementById('editNombreRol').value = nombre;
               // Renderizar accesos
               const accesosArr = [
+                {val:'dashboard', label:'Dashboard'},
+                {val:'auditoria', label:'Auditoria'},
                 {val:'roles', label:'Roles'},
-                {val:'empleados', label:'Empleados'},
                 {val:'usuarios', label:'Usuarios'},
+                {val:'proveedores', label:'Proveedores'},
+                {val:'empleados', label:'Empleados'},
+                {val:'clientes', label:'Clientes'},
                 {val:'productos', label:'Productos'},
                 {val:'detalleProductos', label:'Detalle Productos'},
                 {val:'cotizaciones', label:'Cotizaciones'},
-                {val:'clientes', label:'Clientes'},
                 {val:'generarCotizacion', label:'Generar Cotización'}
               ];
               let permisosArr = [];
@@ -310,26 +313,32 @@ function cargarRoles() {
 
 function iconoAcceso(nombre) {
   const iconos = {
+    dashboard: '<i class="fas fa-tachometer-alt" style="color:#2980b9;"></i>',
+    auditoria: '<i class="fas fa-search" style="color:#2980b9;"></i>',
     roles: '<i class="fas fa-user-shield" style="color:#2980b9;"></i>',
-    empleados: '<i class="fas fa-users" style="color:#16a085;"></i>',
     usuarios: '<i class="fas fa-user" style="color:#8e44ad;"></i>',
+    proveedores: '<i class="fas fa-handshake" style="color:#2980b9;"></i>',
+    empleados: '<i class="fas fa-users" style="color:#16a085;"></i>',
+    clientes: '<i class="fas fa-address-book" style="color:#34495e;"></i>',
     productos: '<i class="fas fa-box" style="color:#d35400;"></i>',
     detalleProductos: '<i class="fas fa-info-circle" style="color:#27ae60;"></i>',
     cotizaciones: '<i class="fas fa-file-invoice-dollar" style="color:#c0392b;"></i>',
-    clientes: '<i class="fas fa-address-book" style="color:#34495e;"></i>',
     generarCotizacion: '<i class="fas fa-file-signature" style="color:#7f8c8d;"></i>'
   };
   return iconos[nombre] || '';
 }
 function accesoNombre(nombre) {
   const nombres = {
+    dashboard: 'Dashboard',
+    auditoria: 'Auditoria',
     roles: 'Roles',
-    empleados: 'Empleados',
     usuarios: 'Usuarios',
+    proveedores: 'Proveedores',
+    empleados: 'Empleados',
+    clientes: 'Clientes',
     productos: 'Productos',
     detalleProductos: 'Detalle Productos',
     cotizaciones: 'Cotizaciones',
-    clientes: 'Clientes',
     generarCotizacion: 'Generar Cotización'
   };
   return nombres[nombre] || nombre;
