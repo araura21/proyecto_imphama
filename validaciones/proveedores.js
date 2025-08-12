@@ -4,6 +4,86 @@
 
 window.initProveedores = function() {
   let proveedoresCache = [];
+  // Modal de edición: solo se crea una vez y se reutiliza
+  let modal = document.getElementById('modal-editar-proveedor');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'modal-editar-proveedor';
+    modal.style.display = 'none';
+    modal.style.position = 'fixed';
+    modal.style.top = '0';
+    modal.style.left = '0';
+    modal.style.width = '100vw';
+    modal.style.height = '100vh';
+    modal.style.background = 'rgba(0,0,0,0.3)';
+    modal.style.zIndex = '9999';
+    modal.innerHTML = `
+      <div style="background:#fff; max-width:420px; margin:60px auto; padding:24px 18px 18px 18px; border-radius:8px; box-shadow:0 4px 24px rgba(0,0,0,0.13); position:relative;">
+        <h3 style="margin-bottom:18px;">Editar Proveedor</h3>
+        <form id="formEditarProveedor">
+          <input type="hidden" id="editIdProveedor">
+          <div style="margin-bottom:12px;">
+            <label for="editRuc" style="font-weight:600;">RUC:</label>
+            <input id="editRuc" name="editRuc" type="text" required style="width:100%; padding:7px; border-radius:4px; border:1px solid #ccc;">
+          </div>
+          <div style="margin-bottom:12px;">
+            <label for="editNombreEmpresa" style="font-weight:600;">Nombre Empresa:</label>
+            <input id="editNombreEmpresa" name="editNombreEmpresa" type="text" required style="width:100%; padding:7px; border-radius:4px; border:1px solid #ccc;">
+          </div>
+          <div style="margin-bottom:12px;">
+            <label for="editTelefono" style="font-weight:600;">Teléfono:</label>
+            <input id="editTelefono" name="editTelefono" type="text" required style="width:100%; padding:7px; border-radius:4px; border:1px solid #ccc;">
+          </div>
+          <div style="margin-bottom:12px;">
+            <label for="editCorreo" style="font-weight:600;">Correo:</label>
+            <input id="editCorreo" name="editCorreo" type="email" required style="width:100%; padding:7px; border-radius:4px; border:1px solid #ccc;">
+          </div>
+          <div style="margin-bottom:12px;">
+            <label for="editDireccion" style="font-weight:600;">Dirección:</label>
+            <input id="editDireccion" name="editDireccion" type="text" required style="width:100%; padding:7px; border-radius:4px; border:1px solid #ccc;">
+          </div>
+          <div style="margin-bottom:12px;">
+            <label for="editEstado" style="font-weight:600;">Estado:</label>
+            <select id="editEstado" name="editEstado" required style="width:100%; padding:7px; border-radius:4px; border:1px solid #ccc;">
+              <option value="activo">Activo</option>
+              <option value="inactivo">Inactivo</option>
+            </select>
+          </div>
+          <div style="display:flex; justify-content:flex-end; gap:10px;">
+            <button type="button" id="btnCancelarEditarProveedor" style="background:#eee; color:#333; border:none; padding:7px 16px; border-radius:4px;">Cancelar</button>
+            <button type="submit" style="background:#2980b9; color:#fff; border:none; padding:7px 16px; border-radius:4px;">Guardar</button>
+          </div>
+        </form>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    // Cerrar modal
+    document.getElementById('btnCancelarEditarProveedor').onclick = function() {
+      modal.style.display = 'none';
+    };
+    // Enviar edición
+    document.getElementById('formEditarProveedor').onsubmit = function(e) {
+      e.preventDefault();
+      const idProveedor = document.getElementById('editIdProveedor').value;
+      const ruc = document.getElementById('editRuc').value.trim();
+      const nombre_empresa = document.getElementById('editNombreEmpresa').value.trim();
+      const telefono = document.getElementById('editTelefono').value.trim();
+      const correo = document.getElementById('editCorreo').value.trim();
+      const direccion = document.getElementById('editDireccion').value.trim();
+      const estado = document.getElementById('editEstado').value;
+      fetch('../controlador/proveedores/editarProveedor.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `idProveedor=${encodeURIComponent(idProveedor)}&ruc=${encodeURIComponent(ruc)}&nombre_empresa=${encodeURIComponent(nombre_empresa)}&telefono=${encodeURIComponent(telefono)}&correo=${encodeURIComponent(correo)}&direccion=${encodeURIComponent(direccion)}&estado=${encodeURIComponent(estado)}`
+      })
+      .then(r => r.json())
+      .then(data => {
+        alert(data.message);
+        modal.style.display = 'none';
+        cargarProveedoresYCache(cargarProveedores);
+      });
+    };
+  }
   function cargarProveedoresYCache(cb) {
     fetch('../controlador/proveedoresController.php?action=listar')
       .then(r => r.json())
@@ -28,7 +108,7 @@ window.initProveedores = function() {
       alert('Todos los campos son obligatorios.');
       return;
     }
-    fetch('../controlador/proveedoresController.php?action=agregar', {
+  fetch('../controlador/proveedores/agregarProveedor.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `ruc=${encodeURIComponent(ruc)}&nombre_empresa=${encodeURIComponent(nombre_empresa)}&telefono=${encodeURIComponent(telefono)}&correo=${encodeURIComponent(correo)}&direccion=${encodeURIComponent(direccion)}&estado=${encodeURIComponent(estado)}`
@@ -140,7 +220,8 @@ window.initProveedores = function() {
       tablaDiv.querySelectorAll('.btn-eliminar-proveedor').forEach(btn => {
         btn.onclick = function() {
           if (!confirm('¿Eliminar proveedor?')) return;
-          fetch(`../controlador/proveedoresController.php?action=eliminar`, {
+          fetch(`../controlador/proveedores/eliminarProveedor.php`, {
+
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `idProveedor=${encodeURIComponent(this.dataset.id)}`
@@ -152,7 +233,22 @@ window.initProveedores = function() {
           });
         };
       });
-      // (Opcional: aquí puedes agregar eventos para editar con modal, igual a roles/empleados)
+      // Evento para editar proveedor (modal)
+      tablaDiv.querySelectorAll('.btn-editar-proveedor').forEach(btn => {
+        btn.onclick = function() {
+          const id = this.dataset.id;
+          const prov = proveedores.find(p => p.idProveedor == id);
+          if (!prov) return;
+          document.getElementById('editIdProveedor').value = prov.idProveedor;
+          document.getElementById('editRuc').value = prov.ruc;
+          document.getElementById('editNombreEmpresa').value = prov.nombre_empresa;
+          document.getElementById('editTelefono').value = prov.telefono;
+          document.getElementById('editCorreo').value = prov.correo;
+          document.getElementById('editDireccion').value = prov.direccion;
+          document.getElementById('editEstado').value = prov.estado;
+          modal.style.display = 'block';
+        };
+      });
       // Actualizar info de página
       const totalPages = Math.ceil(proveedores.length / pageSize) || 1;
       pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
