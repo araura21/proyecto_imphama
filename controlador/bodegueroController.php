@@ -55,6 +55,88 @@ if (isset($_GET['action'])) {
         echo json_encode($result);
         exit;
     }
+    if ($_GET['action'] === 'eliminar_detalle' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        $id = isset($_POST['idDetalle']) ? intval($_POST['idDetalle']) : 0;
+        $result = eliminarDetalleProducto($id);
+        echo json_encode($result);
+        exit;
+    }
+    if ($_GET['action'] === 'editar_detalle' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        $result = editarDetalleProducto($_POST);
+        echo json_encode($result);
+        exit;
+    }
+}
+// Eliminar detalle de producto
+function eliminarDetalleProducto($idDetalle) {
+    $db = new connectionDB();
+    $conn = $db->connection();
+    if (!$conn) {
+        return ['success' => false, 'message' => 'Error de conexión a la base de datos'];
+    }
+    $stmt = $conn->prepare("DELETE FROM producto_detalle WHERE idDetalle = ?");
+    if (!$stmt) {
+        $error = $conn->error;
+        $conn->close();
+        return ['success' => false, 'message' => 'Error en prepare: ' . $error];
+    }
+    $stmt->bind_param('i', $idDetalle);
+    if ($stmt->execute()) {
+        $stmt->close();
+        $conn->close();
+        return ['success' => true, 'message' => 'Detalle eliminado correctamente'];
+    } else {
+        $error = $stmt->error;
+        $stmt->close();
+        $conn->close();
+        return ['success' => false, 'message' => 'Error al eliminar detalle: ' . $error];
+    }
+}
+
+// Editar detalle de producto
+function editarDetalleProducto($data) {
+    $db = new connectionDB();
+    $conn = $db->connection();
+    if (!$conn) {
+        return ['success' => false, 'message' => 'Error de conexión a la base de datos'];
+    }
+    $idDetalle = isset($data['idDetalle']) ? intval($data['idDetalle']) : 0;
+    if ($idDetalle <= 0) {
+        $conn->close();
+        return ['success' => false, 'message' => 'ID de detalle inválido'];
+    }
+    // Procesar datos
+    $idProducto = intval($data['idProducto']);
+    $idProveedor = intval($data['idProveedor']);
+    $marca = isset($data['marca']) ? trim($data['marca']) : null;
+    $modelo = isset($data['modelo']) ? trim($data['modelo']) : null;
+    $precio_unitario = floatval($data['precio_unitario']);
+    $moneda = trim($data['moneda']);
+    $cantidad = intval($data['cantidad']);
+    $pais_origen = isset($data['pais_origen']) ? trim($data['pais_origen']) : null;
+    $material = isset($data['material']) ? trim($data['material']) : null;
+    $observaciones = isset($data['observaciones']) ? trim($data['observaciones']) : null;
+
+    $stmt = $conn->prepare("UPDATE producto_detalle SET idProducto=?, idProveedor=?, marca=?, modelo=?, precio_unitario=?, moneda=?, cantidad=?, pais_origen=?, material=?, observaciones=? WHERE idDetalle=?");
+    if (!$stmt) {
+        $error = $conn->error;
+        $conn->close();
+        return ['success' => false, 'message' => 'Error en prepare: ' . $error];
+    }
+    $stmt->bind_param(
+        'iisssdisssi',
+        $idProducto, $idProveedor, $marca, $modelo, $precio_unitario, $moneda, $cantidad, $pais_origen, $material, $observaciones, $idDetalle
+    );
+    if ($stmt->execute()) {
+        $stmt->close();
+        $conn->close();
+        return ['success' => true, 'message' => 'Detalle editado correctamente'];
+    } else {
+        $error = $stmt->error;
+        $stmt->close();
+        $conn->close();
+        return ['success' => false, 'message' => 'Error al editar detalle: ' . $error];
+    }
 }
 // Obtener proveedores para el select
 function obtenerProveedores() {
