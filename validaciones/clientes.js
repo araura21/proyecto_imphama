@@ -73,7 +73,7 @@ window.initClientes = function() {
   const correo = document.getElementById('editCorreoCliente').value.trim();
   const direccion = document.getElementById('editDireccionCliente').value.trim();
   const estado = document.getElementById('editEstadoCliente').value;
-  fetch('/controlador/clientes/editarCliente.php', {
+  fetch('../controlador/clientes/editarCliente.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `idCliente=${encodeURIComponent(idCliente)}&nombre=${encodeURIComponent(nombre)}&apellido=${encodeURIComponent(apellido)}&cedula=${encodeURIComponent(cedula)}&telefono=${encodeURIComponent(telefono)}&correo=${encodeURIComponent(correo)}&direccion=${encodeURIComponent(direccion)}&estado=${encodeURIComponent(estado)}`

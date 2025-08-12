@@ -1,13 +1,5 @@
 <?php
 require_once '../controlador/bodegueroController.php';
-
-header('Content-Type: text/html; charset=UTF-8');
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['agregar_producto_detalle'])) {
-    $result = agregarProductoDetalle($_POST);
-    echo "<script>alert('" . addslashes($result['message']) . "');</script>";
-}
-
 $productos = obtenerProductos();
 $proveedores = obtenerProveedores();
 ?>
@@ -17,186 +9,86 @@ $proveedores = obtenerProveedores();
 <head>
     <meta charset="UTF-8">
     <title>Agregar Detalle de Producto</title>
-    <link rel="stylesheet" href="assets/css/productos.css">
+    <link rel="stylesheet" href="../assets/css/productos.css">
 </head>
-<body>
-    <h2 class="section-title">Agregar Detalle de Producto</h2>
-    <form method="POST" class="form-container">
-        <!-- Identificación del Producto -->
-        <fieldset class="fieldset">
-            <legend class="legend">Identificación del Producto</legend>
-            <div class="grid-container">
-                <div>
-                    <label class="label">Producto:</label>
-                    <select name="idProducto" required class="input-field">
-                        <option value="">Seleccione un producto</option>
-                        <?php foreach ($productos as $producto): ?>
-                            <option value="<?= $producto['idProducto']; ?>"><?= htmlspecialchars($producto['nombre']); ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <div>
-                    <label class="label">Proveedor:</label>
-                    <select name="idProveedor" required class="input-field">
-                        <option value="">Seleccione un proveedor</option>
-                        <?php foreach ($proveedores as $proveedor): ?>
-                            <option value="<?= $proveedor['idProveedor']; ?>"><?= htmlspecialchars($proveedor['nombre_empresa']); ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <div>
-                    <label class="label">Marca:</label>
-                    <input type="text" name="marca" class="input-field">
-                </div>
-                <div>
-                    <label class="label">Modelo:</label>
-                    <input type="text" name="modelo" class="input-field">
-                </div>
-                <div>
-                    <label class="label">País Origen:</label>
-                    <input type="text" name="pais_origen" class="input-field">
-                </div>
-                <div>
-                    <label class="label">Material:</label>
-                    <input type="text" name="material" class="input-field">
-                </div>
-                <div class="full-width">
-                    <label class="label">Certificaciones:</label>
-                    <input type="text" name="certificaciones" class="input-field">
-                </div>
+
+<div style="padding:24px;">
+    <h2 style="margin-bottom:18px;">Gestión de Detalle de Productos</h2>
+    <form id="formAgregarDetalleProducto" method="POST" style="margin-bottom:32px;">
+        <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:18px; margin-bottom:18px;">
+            <div>
+                <label style="font-weight:600;">Producto:</label>
+                <select name="idProducto" required style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;">
+                    <option value="">Seleccione un producto</option>
+                    <?php foreach ($productos as $producto): ?>
+                        <option value="<?= $producto['idProducto']; ?>"><?= htmlspecialchars($producto['nombre']); ?></option>
+                    <?php endforeach; ?>
+                </select>
             </div>
-        </fieldset>
-
-        <!-- Datos Comerciales -->
-        <fieldset class="fieldset">
-            <legend class="legend">Datos Comerciales</legend>
-            <div class="grid-container">
-                <div>
-                    <label class="label">Precio Unitario:</label>
-                    <input type="number" step="0.0001" name="precio_unitario" required class="input-field">
-                </div>
-                <div>
-                    <label class="label">Moneda:</label>
-                    <input type="text" name="moneda" value="USD" required class="input-field">
-                </div>
-                <div>
-                    <label class="label">Cantidad:</label>
-                    <input type="number" name="cantidad" required class="input-field">
-                </div>
-                <div>
-                    <label class="label">Descuento Volumen:</label>
-                    <input type="number" step="0.01" name="descuento_volumen" value="0.00" class="input-field">
-                </div>
-                <div>
-                    <label class="label">Descuento Promocional:</label>
-                    <input type="number" step="0.01" name="descuento_promocional" value="0.00" class="input-field">
-                </div>
-                <div>
-                    <label class="label">Impuestos Incluidos:</label>
-                    <input type="checkbox" name="impuestos_incluidos" value="1" class="checkbox">
-                </div>
-                <div>
-                    <label class="label">Condiciones Pago:</label>
-                    <input type="text" name="condiciones_pago" class="input-field">
-                </div>
-                <div>
-                    <label class="label">Penalizaciones Retraso:</label>
-                    <input type="text" name="penalizaciones_retraso" class="input-field">
-                </div>
+            <div>
+                <label style="font-weight:600;">Proveedor:</label>
+                <select name="idProveedor" required style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;">
+                    <option value="">Seleccione un proveedor</option>
+                    <?php foreach ($proveedores as $proveedor): ?>
+                        <option value="<?= $proveedor['idProveedor']; ?>"><?= htmlspecialchars($proveedor['nombre_empresa']); ?></option>
+                    <?php endforeach; ?>
+                </select>
             </div>
-        </fieldset>
-
-        <!-- Logística -->
-        <fieldset class="fieldset">
-            <legend class="legend">Datos Logísticos</legend>
-            <div class="grid-container">
-                <div>
-                    <label class="label">Tiempo Entrega (días):</label>
-                    <input type="number" name="tiempo_entrega_dias" class="input-field">
-                </div>
-                <div>
-                    <label class="label">Lugar Entrega:</label>
-                    <input type="text" name="lugar_entrega" class="input-field">
-                </div>
-                <div>
-                    <label class="label">Método Transporte:</label>
-                    <input type="text" name="metodo_transporte" class="input-field">
-                </div>
-                <div>
-                    <label class="label">Costo Envío:</label>
-                    <input type="number" step="0.01" name="costo_envio" value="0.00" class="input-field">
-                </div>
-                <div>
-                    <label class="label">Costo Instalación:</label>
-                    <input type="number" step="0.01" name="costo_instalacion" value="0.00" class="input-field">
-                </div>
-                <div>
-                    <label class="label">Capacidad Suministro Mensual:</label>
-                    <input type="number" name="capacidad_suministro_mensual" class="input-field">
-                </div>
-                <div>
-                    <label class="label">Disponibilidad Inmediata:</label>
-                    <input type="checkbox" name="disponibilidad_inmediata" value="1" class="checkbox">
-                </div>
-                <div>
-                    <label class="label">Entregas Parciales:</label>
-                    <input type="checkbox" name="entregas_parciales" value="1" checked class="checkbox">
-                </div>
+            <div>
+                <label style="font-weight:600;">Marca:</label>
+                <input type="text" name="marca" style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;">
             </div>
-        </fieldset>
-
-        <!-- Características Físicas -->
-        <fieldset class="fieldset">
-            <legend class="legend">Características Físicas</legend>
-            <div class="grid-container">
-                <div>
-                    <label class="label">Colores Disponibles:</label>
-                    <input type="text" name="colores_disponibles" class="input-field">
-                </div>
-                <div>
-                    <label class="label">Tamaño/Dimensiones:</label>
-                    <input type="text" name="tamano_dimensiones" class="input-field">
-                </div>
-                <div>
-                    <label class="label">Peso:</label>
-                    <input type="text" name="peso" class="input-field">
-                </div>
-                <div>
-                    <label class="label">Durabilidad Estimada:</label>
-                    <input type="text" name="durabilidad_estimada" class="input-field">
-                </div>
-                <div>
-                    <label class="label">Cumplimiento Normas:</label>
-                    <input type="text" name="cumplimiento_normas" class="input-field">
-                </div>
-                <div>
-                    <label class="label">Garantía (meses):</label>
-                    <input type="number" name="garantia_mes" class="input-field">
-                </div>
+            <div>
+                <label style="font-weight:600;">Modelo:</label>
+                <input type="text" name="modelo" style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;">
             </div>
-        </fieldset>
-
-        <!-- Servicios y Soporte -->
-        <fieldset class="fieldset">
-            <legend class="legend">Servicios y Soporte</legend>
-            <div class="checkbox-grid">
-                <div><label><input type="checkbox" name="devolucion" value="1"> Devolución</label></div>
-                <div><label><input type="checkbox" name="soporte_postventa" value="1"> Soporte Postventa</label></div>
-                <div><label><input type="checkbox" name="servicio_tecnico_incluido" value="1"> Servicio Técnico Incluido</label></div>
-                <div><label><input type="checkbox" name="capacitacion_incluida" value="1"> Capacitación Incluida</label></div>
+            <div>
+                <label style="font-weight:600;">Precio Unitario:</label>
+                <input type="number" step="0.0001" name="precio_unitario" required style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;">
             </div>
-        </fieldset>
-
-        <!-- Observaciones -->
-        <fieldset class="fieldset">
-            <legend class="legend">Observaciones</legend>
-            <textarea name="observaciones" class="textarea" rows="4"></textarea>
-        </fieldset>
-
-        <button type="submit" name="agregar_producto_detalle" class="submit-button">
-            Agregar Detalle
-        </button>
+            <div>
+                <label style="font-weight:600;">Moneda:</label>
+                <input type="text" name="moneda" value="USD" required style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;">
+            </div>
+            <div>
+                <label style="font-weight:600;">Cantidad:</label>
+                <input type="number" name="cantidad" required style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;">
+            </div>
+            <div>
+                <label style="font-weight:600;">País Origen:</label>
+                <input type="text" name="pais_origen" style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;">
+            </div>
+            <div>
+                <label style="font-weight:600;">Material:</label>
+                <input type="text" name="material" style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;">
+            </div>
+            <div style="grid-column:1/3;">
+                <label style="font-weight:600;">Observaciones:</label>
+                <textarea name="observaciones" rows="2" style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;"></textarea>
+            </div>
+        </div>
+        <button type="submit" name="agregar_producto_detalle" style="background:#d35400; color:#fff; border:none; padding:10px 24px; border-radius:6px; font-weight:600; font-size:1rem; cursor:pointer; box-shadow:0 2px 8px rgba(211,84,0,0.08);">Agregar Detalle</button>
     </form>
-</body>
-</html>
-?>
+        <table id="tablaDetalleProductos" style="width:100%; border-collapse:collapse; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+            <thead>
+                <tr style="background:#f4f4f4;">
+                    <th style="padding:10px; border:1px solid #ddd;">ID</th>
+                    <th style="padding:10px; border:1px solid #ddd;">Producto</th>
+                    <th style="padding:10px; border:1px solid #ddd;">Proveedor</th>
+                    <th style="padding:10px; border:1px solid #ddd;">Marca</th>
+                    <th style="padding:10px; border:1px solid #ddd;">Modelo</th>
+                    <th style="padding:10px; border:1px solid #ddd;">Precio Unitario</th>
+                    <th style="padding:10px; border:1px solid #ddd;">Moneda</th>
+                    <th style="padding:10px; border:1px solid #ddd;">Cantidad</th>
+                    <th style="padding:10px; border:1px solid #ddd;">País Origen</th>
+                    <th style="padding:10px; border:1px solid #ddd;">Material</th>
+                    <th style="padding:10px; border:1px solid #ddd;">Observaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los detalles se cargarán dinámicamente aquí por JS -->
+            </tbody>
+        </table>
+</div>
+<script src="../validaciones/detalleProductos.js"></script>
+</div>
