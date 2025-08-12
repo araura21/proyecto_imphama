@@ -15,4 +15,6 @@ if ($action === 'listar') {
     exit;
 }
 
-// Puedes agregar aquí las acciones de agregar, editar y eliminar siguiendo la misma lógica que proveedoresController.php
+
+echo json_encode(['success' => false, 'message' => 'Acción no válida.']);
+exit;
