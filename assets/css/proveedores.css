@@ -1,0 +1,91 @@
+/* Contenedor principal */
+.proveedores-container {
+  padding: 24px;
+  font-family: sans-serif;
+}
+
+/* Título */
+.proveedores-container h2 {
+  margin-bottom: 18px;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* Formulario */
+.proveedores-form {
+  margin-bottom: 32px;
+}
+
+/* Grid del formulario */
+.proveedores-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+/* Etiquetas del formulario */
+.proveedores-form-grid label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+  color: #444;
+}
+
+/* Inputs del formulario */
+.proveedores-form-grid input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 0.97rem;
+}
+
+/* Botón principal */
+.btn-proveedor {
+  background: #8e44ad;
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(142, 68, 173, 0.08);
+  transition: background 0.3s ease;
+}
+
+.btn-proveedor:hover {
+  background: #7a3795;
+}
+
+/* Tabla de proveedores */
+.proveedores-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.97rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  margin-top: 12px;
+}
+
+/* Encabezado de tabla */
+.proveedores-table thead {
+  background-color: #f4f4f4;
+}
+
+.proveedores-table th,
+.proveedores-table td {
+  padding: 12px 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+/* Fila par para mejor legibilidad */
+.proveedores-table tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+/* Última columna (acciones) centrada */
+.proveedores-table td:last-child {
+  text-align: center;
+}
