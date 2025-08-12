@@ -1,93 +1,91 @@
+/* Contenedor principal */
 .proveedores-container {
-  max-width: 900px;
-  margin: 30px auto;
-  background: #fff;
-  padding: 24px 32px;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  padding: 24px;
+  font-family: sans-serif;
 }
 
+/* Título */
 .proveedores-container h2 {
-  margin-bottom: 20px;
+  margin-bottom: 18px;
+  font-size: 1.5rem;
   color: #333;
-  font-size: 1.6rem;
-  font-weight: 600;
 }
 
+/* Formulario */
 .proveedores-form {
-  margin-bottom: 28px;
+  margin-bottom: 32px;
 }
 
+/* Grid del formulario */
 .proveedores-form-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px 32px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-bottom: 18px;
 }
 
-.proveedores-form-grid > div {
-  flex: 1 1 220px;
-  min-width: 220px;
-}
-
-.proveedores-form label {
+/* Etiquetas del formulario */
+.proveedores-form-grid label {
+  font-weight: 600;
   display: block;
   margin-bottom: 6px;
-  font-weight: 500;
   color: #444;
 }
 
-.proveedores-form input {
+/* Inputs del formulario */
+.proveedores-form-grid input {
   width: 100%;
-  padding: 7px 10px;
-  border: 1px solid #bbb;
+  padding: 8px;
   border-radius: 4px;
-  font-size: 1rem;
-  background: #fafbfc;
-  transition: border-color 0.2s;
+  border: 1px solid #ccc;
+  font-size: 0.97rem;
 }
 
-.proveedores-form input:focus {
-  border-color: #2980b9;
-  outline: none;
-}
-
+/* Botón principal */
 .btn-proveedor {
-  margin-top: 18px;
-  background: #2980b9;
+  background: #8e44ad;
   color: #fff;
   border: none;
-  padding: 9px 28px;
-  border-radius: 5px;
+  padding: 10px 24px;
+  border-radius: 6px;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(142, 68, 173, 0.08);
+  transition: background 0.3s ease;
 }
 
 .btn-proveedor:hover {
-  background: #21618c;
+  background: #7a3795;
 }
 
+/* Tabla de proveedores */
 .proveedores-table {
   width: 100%;
   border-collapse: collapse;
-  background: #fff;
-  margin-top: 10px;
+  font-size: 0.97rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  margin-top: 12px;
+}
+
+/* Encabezado de tabla */
+.proveedores-table thead {
+  background-color: #f4f4f4;
 }
 
 .proveedores-table th,
 .proveedores-table td {
-  padding: 10px 8px;
-  border: 1px solid #e1e1e1;
+  padding: 12px 10px;
+  border: 1px solid #ddd;
   text-align: left;
-  font-size: 0.98rem;
 }
 
-.proveedores-table thead tr {
-  background: #f5f7fa;
-}
-
+/* Fila par para mejor legibilidad */
 .proveedores-table tbody tr:nth-child(even) {
-  background: #f9f9f9;
+  background-color: #fafafa;
 }
 
+/* Última columna (acciones) centrada */
+.proveedores-table td:last-child {
+  text-align: center;
+}

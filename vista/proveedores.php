@@ -1,7 +1,7 @@
 <?php
 // proveedores.php
 ?>
-<link rel="stylesheet" href="../assets/css/proveedores.css">
+<link rel="stylesheet" href="assets/css/proveedores.css">
 <div class="proveedores-container">
   <h2>Gestión de Proveedores</h2>
   <form id="formAgregarProveedor" class="proveedores-form">
