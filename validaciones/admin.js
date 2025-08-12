@@ -1,4 +1,4 @@
-addMenuHandler('btn-proveedores', 'proveedores.php');
+addMenuHandler('btn-proveedores', 'proveedores.php', '../validaciones/proveedores.js');
 
 function setActiveMenu(id) {
   document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
@@ -32,6 +32,7 @@ function addMenuHandler(btnId, phpFile, extraScript) {
             if (btnId === 'btn-roles' && window.initRoles) window.initRoles();
             if (btnId === 'btn-empleados' && window.initEmpleados) window.initEmpleados();
             if (btnId === 'btn-usuarios' && window.initUsuarios) window.initUsuarios();
+            if (btnId === 'btn-proveedores' && window.initProveedores) window.initProveedores();
           };
           document.body.appendChild(script);
         }

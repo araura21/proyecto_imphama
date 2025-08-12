@@ -2,7 +2,8 @@
 // proveedores.php
 ?>
 <link rel="stylesheet" href="assets/css/proveedores.css">
-<div class="proveedores-container">
+<script src="../validaciones/proveedores.js"></script>
+<div class="proveedores-container" onload="window.initProveedores && window.initProveedores()">
   <h2>Gestión de Proveedores</h2>
   <form id="formAgregarProveedor" class="proveedores-form">
     <div class="proveedores-form-grid">
