@@ -1,3 +1,4 @@
+
 <?php
 require_once '../../modelo/conexionBD.php';
 
@@ -9,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(['success' => false, 'message' => 'ID de rol inválido']);
         exit;
     }
-    $conn = (new ConexionBD())->getConexion();
+    $conn = (new connectionDB())->connection();
     $stmt = $conn->prepare('DELETE FROM rol WHERE idRol=?');
     if (!$stmt) {
         echo json_encode(['success' => false, 'message' => 'Error en prepare: ' . $conn->error]);
