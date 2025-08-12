@@ -1,6 +1,8 @@
 <?php
 // auditoria.php
 ?>
+
+
 <div style="padding:32px;">
   <h2 style="margin-bottom:28px; font-size:2rem; font-weight:700; color:#222d32;">Auditoría del Sistema</h2>
   <div style="background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.06); padding:24px;">
