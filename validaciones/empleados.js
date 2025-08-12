@@ -96,10 +96,38 @@ window.initEmpleados = function() {
     const cedula = document.getElementById('cedula').value.trim();
     const telefono = document.getElementById('telefono').value.trim();
     const correo = document.getElementById('correo').value.trim();
+    const ruc = document.getElementById('ruc') ? document.getElementById('ruc').value.trim() : '';
+    // Validaciones
+    if (nombre.length === 0 || nombre.length > 50) {
+      msg.textContent = 'El nombre debe tener máximo 50 caracteres.';
+      msg.style.color = 'red';
+      return;
+    }
+    if (apellido.length === 0 || apellido.length > 50) {
+      msg.textContent = 'El apellido debe tener máximo 50 caracteres.';
+      msg.style.color = 'red';
+      return;
+    }
+    if (cedula.length !== 10 || !/^\d{10}$/.test(cedula)) {
+      msg.textContent = 'La cédula debe tener exactamente 10 dígitos.';
+      msg.style.color = 'red';
+      return;
+    }
+    if (ruc && (ruc.length !== 13 || !/^\d{13}$/.test(ruc))) {
+      msg.textContent = 'El RUC debe tener exactamente 13 dígitos.';
+      msg.style.color = 'red';
+      return;
+    }
+    if (!/^.+@.+\.com$/.test(correo)) {
+      msg.textContent = 'El correo debe contener @ y terminar en .com';
+      msg.style.color = 'red';
+      return;
+    }
+    // Si pasa validaciones, enviar
     fetch('../controlador/empleados/agregarEmpleado.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: `nombre=${encodeURIComponent(nombre)}&apellido=${encodeURIComponent(apellido)}&cedula=${encodeURIComponent(cedula)}&telefono=${encodeURIComponent(telefono)}&correo=${encodeURIComponent(correo)}`
+      body: `nombre=${encodeURIComponent(nombre)}&apellido=${encodeURIComponent(apellido)}&cedula=${encodeURIComponent(cedula)}&telefono=${encodeURIComponent(telefono)}&correo=${encodeURIComponent(correo)}&ruc=${encodeURIComponent(ruc)}`
     })
     .then(r => r.json())
     .then(data => {

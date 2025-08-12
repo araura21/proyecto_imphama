@@ -63,7 +63,24 @@ function cargarEmpleadosYRoles() {
     const usuario = document.getElementById('usuario').value;
     const password = document.getElementById('password').value;
     const estado = document.getElementById('estado').value;
-  fetch('../controlador/usuarios/agregarUsuario.php', {
+    // Validaciones
+    if (usuario.length === 0 || usuario.length > 50) {
+      msg.textContent = 'El usuario debe tener máximo 50 caracteres.';
+      msg.style.color = 'red';
+      return;
+    }
+    if (password.length < 10) {
+      msg.textContent = 'La contraseña debe tener al menos 10 caracteres.';
+      msg.style.color = 'red';
+      return;
+    }
+    if (!/[0-9]/.test(password) || !/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
+      msg.textContent = 'La contraseña debe contener al menos un número y un caracter especial.';
+      msg.style.color = 'red';
+      return;
+    }
+    // Si pasa validaciones, enviar
+    fetch('../controlador/usuarios/agregarUsuario.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `idEmpleado=${encodeURIComponent(idEmpleado)}&idRol=${encodeURIComponent(idRol)}&usuario=${encodeURIComponent(usuario)}&password=${encodeURIComponent(password)}&estado=${encodeURIComponent(estado)}`
