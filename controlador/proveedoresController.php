@@ -7,7 +7,7 @@ $action = isset($_GET['action']) ? $_GET['action'] : (isset($_POST['action']) ? 
 if ($action === 'listar') {
 	$db = new connectionDB();
 	$conn = $db->connection();
-	$result = $conn->query('SELECT idProveedor, ruc, nombre_empresa, telefono, correo, direccion FROM proveedor ORDER BY idProveedor ASC');
+	$result = $conn->query('SELECT idProveedor, ruc, nombre_empresa, telefono, correo, direccion, estado FROM proveedor ORDER BY idProveedor ASC');
 	$proveedores = [];
 	while ($row = $result->fetch_assoc()) {
 		$proveedores[] = $row;
@@ -24,7 +24,8 @@ if ($action === 'agregar') {
 	$telefono = $conn->real_escape_string($_POST['telefono']);
 	$correo = $conn->real_escape_string($_POST['correo']);
 	$direccion = $conn->real_escape_string($_POST['direccion']);
-	$sql = "INSERT INTO proveedor (ruc, nombre_empresa, telefono, correo, direccion) VALUES ('$ruc', '$nombre_empresa', '$telefono', '$correo', '$direccion')";
+	$estado = isset($_POST['estado']) ? $conn->real_escape_string($_POST['estado']) : 'activo';
+	$sql = "INSERT INTO proveedor (ruc, nombre_empresa, telefono, correo, direccion, estado) VALUES ('$ruc', '$nombre_empresa', '$telefono', '$correo', '$direccion', '$estado')";
 	if ($conn->query($sql)) {
 		echo json_encode(['success' => true, 'message' => 'Proveedor agregado correctamente.']);
 	} else {
