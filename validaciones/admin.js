@@ -25,19 +25,23 @@ function addMenuHandler(btnId, phpFile, extraScript) {
       .then(function(response) { return response.text(); })
       .then(function(html) {
         main.innerHTML = html;
-    if (extraScript) { 
+        if (extraScript) {
+          // Eliminar cualquier script previo con el mismo src
+          var oldScript = document.querySelector('script[src="' + extraScript + '"]');
+          if (oldScript) oldScript.remove();
+          // Crear y agregar el script de nuevo para asegurar ejecución
           var script = document.createElement('script');
-          script.src = extraScript;
+          script.src = extraScript + '?v=' + Date.now(); // Forzar recarga
           script.onload = function() {
             if (btnId === 'btn-roles' && window.initRoles) window.initRoles();
             if (btnId === 'btn-empleados' && window.initEmpleados) window.initEmpleados();
             if (btnId === 'btn-usuarios' && window.initUsuarios) window.initUsuarios();
             if (btnId === 'btn-proveedores' && window.initProveedores) window.initProveedores();
-      if (btnId === 'btn-productos' && window.initProductos) window.initProductos();
+            if (btnId === 'btn-cotizaciones' && window.initCotizaciones) window.initCotizaciones();
+            if (btnId === 'btn-productos' && window.initProductos) window.initProductos();
           };
           document.body.appendChild(script);
         }
-addMenuHandler('btn-productos', 'productos.php', '../validaciones/productos.js');
       })
       .catch(function(e) { main.innerHTML = '<div style=\"color:red; padding:2em;\">Error al cargar '+phpFile+'.</div>'; });
   });

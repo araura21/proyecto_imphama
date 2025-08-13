@@ -71,15 +71,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && $_POST['
 $sql = "SELECT idCotizacion, idProducto, idCliente, idUsuario, fecha_emision, notas, estado FROM cotizacion";
 $result = $conn->query($sql);
 ?>
+<script src="../validaciones/cotizaciones.js"></script>
 <div style="padding:24px;">
   <!-- DEBUG: Filas devueltas: <?php echo ($result ? $result->num_rows : 'ERROR: ' . $conn->error); ?> -->
   <h2 style="margin-bottom:18px;">Gestión de Cotizaciones</h2>
   <form id="formAgregarCotizacion" style="margin-bottom:32px;">
     <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:18px; margin-bottom:18px;">
-      <div>
-        <label for="idProducto" style="font-weight:600;">ID Producto:</label>
-        <input id="idProducto" type="number" name="idProducto" required style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;">
-      </div>
+        <div>
+          <label for="idProducto" style="font-weight:600;">ID Producto:</label>
+          <input id="idProducto" type="number" name="idProducto" required style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;">
+        </div>
       <div>
         <label for="idCliente" style="font-weight:600;">ID Cliente:</label>
         <input id="idCliente" type="number" name="idCliente" required style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;">
@@ -100,6 +101,10 @@ $result = $conn->query($sql);
           <option value="aceptada">aceptada</option>
           <option value="rechazada">rechazada</option>
         </select>
+      </div>
+      <div>
+        <label for="fecha_emision" style="font-weight:600;">Fecha de Emisión:</label>
+        <input id="fecha_emision" type="date" name="fecha_emision" style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;" value="<?php echo date('Y-m-d'); ?>">
       </div>
     </div>
     <button type="submit" style="background:#27ae60; color:#fff; border:none; padding:10px 24px; border-radius:6px; font-weight:600; font-size:1rem; cursor:pointer; box-shadow:0 2px 8px rgba(39,174,96,0.08);">Agregar Cotización</button>

@@ -113,5 +113,27 @@
   </div>
 </div>
 <script>
-// Aquí iría la lógica JS para cargar datos y comparar proveedores, por ahora solo es maqueta visual
+document.getElementById('btnCargarDatos').addEventListener('click', function() {
+  var idCot = document.getElementById('idCotizacion').value;
+  if (!idCot) {
+    alert('Seleccione una cotización');
+    return;
+  }
+  fetch('../controlador/generarCotizacionController.php?idCotizacion=' + idCot)
+    .then(response => response.json())
+    .then(data => {
+      if (data.error) {
+        document.getElementById('datosCotizacion').innerHTML = '<div style="color:red;">' + data.error + '</div>';
+        return;
+      }
+      // Producto
+      var productoHtml = `<h3 style="margin-bottom:8px;">Producto</h3><div style="background:#f9f9f9; border-radius:8px; padding:12px; box-shadow:0 1px 4px rgba(0,0,0,0.04); display:flex; gap:18px; align-items:center;"><img src='assets/img/productos/corporal/1.jpg' alt='Producto' style='height:60px; border-radius:6px; box-shadow:0 1px 4px rgba(0,0,0,0.08);'><div><strong>Nombre:</strong> ${data.producto_nombre || ''}<br><strong>Descripción:</strong> ${data.producto_descripcion || ''}<br></div></div>`;
+      // Cliente
+      var clienteHtml = `<h3 style="margin-bottom:8px;">Cliente</h3><div style="background:#f9f9f9; border-radius:8px; padding:12px; box-shadow:0 1px 4px rgba(0,0,0,0.04);"><strong>Nombre:</strong> ${data.cliente_nombre || ''}<br><strong>Apellido:</strong> ${data.cliente_apellido || ''}<br><strong>Cédula:</strong> ${data.cedula || ''}<br><strong>Teléfono:</strong> ${data.telefono || ''}<br><strong>Correo:</strong> ${data.correo || ''}<br></div>`;
+      document.getElementById('datosCotizacion').innerHTML = `<div style='display:flex; gap:32px;'><div style='flex:1;'>${productoHtml}</div><div style='flex:1;'>${clienteHtml}</div></div>`;
+    })
+    .catch(err => {
+      document.getElementById('datosCotizacion').innerHTML = '<div style="color:red;">Error al cargar datos</div>';
+    });
+});
 </script>

@@ -7,7 +7,15 @@ switch ($action) {
     case 'listar':
         include '../vista/cotizaciones.php';
         break;
-    // Puedes agregar más acciones aquí (agregar, eliminar, editar) si lo necesitas
+    case 'agregar':
+        include 'cotizaciones/agregarCotizacion.php';
+        break;
+    case 'editar':
+        include 'cotizaciones/editarCotizacion.php';
+        break;
+    case 'eliminar':
+        include 'cotizaciones/eliminarCotizacion.php';
+        break;
     default:
         include '../vista/cotizaciones.php';
         break;
