@@ -50,7 +50,7 @@ addMenuHandler('btn-empleados', 'empleados.php', '../validaciones/empleados.js')
 addMenuHandler('btn-usuarios', 'usuarios.php', '../validaciones/usuarios.js');
 addMenuHandler('btn-productos', 'productos.php');
 addMenuHandler('btn-detalle-productos', 'detalleProductos.php', '../validaciones/detalleProductos.js');
-addMenuHandler('btn-cotizaciones', 'cotizaciones.php');
+addMenuHandler('btn-cotizaciones', '../controlador/cotizacionesController.php?action=listar', '../validaciones/cotizaciones.js');
 addMenuHandler('btn-clientes', 'clientes.php', '../validaciones/clientes.js');
 addMenuHandler('btn-generar-cotizacion', 'generarCotizacion.php');
 
