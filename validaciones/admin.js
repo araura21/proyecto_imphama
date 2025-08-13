@@ -52,11 +52,11 @@ addMenuHandler('btn-auditoria', 'auditoria.php');
 addMenuHandler('btn-roles', 'roles.php', '../validaciones/roles.js');
 addMenuHandler('btn-empleados', 'empleados.php', '../validaciones/empleados.js');
 addMenuHandler('btn-usuarios', 'usuarios.php', '../validaciones/usuarios.js');
-addMenuHandler('btn-productos', 'productos.php');
+addMenuHandler('btn-productos', 'productos.php', '../validaciones/productos.js');
 addMenuHandler('btn-detalle-productos', 'detalleProductos.php', '../validaciones/detalleProductos.js');
 addMenuHandler('btn-cotizaciones', '../controlador/cotizacionesController.php?action=listar', '../validaciones/cotizaciones.js');
 addMenuHandler('btn-clientes', 'clientes.php', '../validaciones/clientes.js');
-addMenuHandler('btn-generar-cotizacion', 'generarCotizacion.php');
+addMenuHandler('btn-generar-cotizacion', 'generarCotizacion.php', '../validaciones/generarCotizacion.js');
 
 window.addEventListener('DOMContentLoaded', function() {
   var btnDashboard = document.getElementById('btn-dashboard');

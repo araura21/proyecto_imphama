@@ -16,37 +16,13 @@
       <label for="idCotizacion" style="font-weight:600;">ID Cotización:</label>
       <select id="idCotizacion" name="idCotizacion" required style="padding:8px; border-radius:4px; border:1px solid #ccc; min-width:180px;">
         <option value="">Seleccione...</option>
-        <!-- Aquí se cargarían dinámicamente las cotizaciones -->
-        <option value="1">Cotización #1</option>
-        <option value="2">Cotización #2</option>
+        <!-- Opciones cargadas dinámicamente por JS -->
       </select>
-      <button type="button" id="btnCargarDatos" style="background:#2980b9; color:#fff; border:none; padding:8px 18px; border-radius:6px; font-weight:600; cursor:pointer;">Cargar Datos</button>
+  <button type="button" id="btnCargarDatos" style="background:#2980b9; color:#fff; border:none; padding:8px 18px; border-radius:6px; font-weight:600; cursor:pointer;">Cargar Datos</button>
     </div>
   </form>
   <div id="datosCotizacion" style="margin-bottom:32px;">
-    <!-- Aquí se mostrarán los datos de producto, proveedor y cliente -->
-    <div style="display:flex; gap:32px;">
-      <div style="flex:1;">
-        <h3 style="margin-bottom:8px;">Producto</h3>
-        <div style="background:#f9f9f9; border-radius:8px; padding:12px; box-shadow:0 1px 4px rgba(0,0,0,0.04); display:flex; gap:18px; align-items:center;">
-          <img src="assets/img/productos/corporal/1.jpg" alt="Producto" style="height:60px; border-radius:6px; box-shadow:0 1px 4px rgba(0,0,0,0.08);">
-          <div>
-            <strong>Nombre:</strong> Casco de Seguridad<br>
-            <strong>Descripción:</strong> Protección para la cabeza en ambientes industriales.<br>
-          </div>
-        </div>
-      </div>
-      <div style="flex:1;">
-        <h3 style="margin-bottom:8px;">Cliente</h3>
-        <div style="background:#f9f9f9; border-radius:8px; padding:12px; box-shadow:0 1px 4px rgba(0,0,0,0.04);">
-          <strong>Nombre:</strong> Carlos<br>
-          <strong>Apellido:</strong> Ramírez<br>
-          <strong>Cédula:</strong> 1234567890<br>
-          <strong>Teléfono:</strong> 0998765432<br>
-          <strong>Correo:</strong> carlos.ramirez@email.com<br>
-        </div>
-      </div>
-    </div>
+    <div style="color:#888; padding:18px; text-align:center;">Seleccione una cotización para ver los datos.</div>
   </div>
   <div id="comparativoProveedores" style="margin-bottom:32px;">
     <h3 style="margin-bottom:12px;">Comparativo de Proveedores</h3>
@@ -54,9 +30,6 @@
       <label for="proveedoresComparar" style="font-weight:600;">Selecciona hasta 3 proveedores:</label>
       <select id="proveedoresComparar" name="proveedoresComparar[]" multiple size="3" style="padding:8px; border-radius:4px; border:1px solid #ccc; min-width:220px;">
         <!-- Aquí se cargarían dinámicamente los proveedores -->
-        <option value="1">Seguridad Total S.A.</option>
-        <option value="2">Protección Integral Cía. Ltda.</option>
-        <option value="3">Proveedora Industrial</option>
       </select>
       <button type="button" id="btnComparar" style="background:#27ae60; color:#fff; border:none; padding:8px 18px; border-radius:6px; font-weight:600; cursor:pointer; margin-left:18px;">Comparar</button>
     </form>
@@ -112,28 +85,4 @@
     <button type="button" style="background:#27ae60; color:#fff; border:none; padding:10px 24px; border-radius:6px; font-weight:600; font-size:1rem; cursor:pointer;">Enviar por Correo</button>
   </div>
 </div>
-<script>
-document.getElementById('btnCargarDatos').addEventListener('click', function() {
-  var idCot = document.getElementById('idCotizacion').value;
-  if (!idCot) {
-    alert('Seleccione una cotización');
-    return;
-  }
-  fetch('../controlador/generarCotizacionController.php?idCotizacion=' + idCot)
-    .then(response => response.json())
-    .then(data => {
-      if (data.error) {
-        document.getElementById('datosCotizacion').innerHTML = '<div style="color:red;">' + data.error + '</div>';
-        return;
-      }
-      // Producto
-      var productoHtml = `<h3 style="margin-bottom:8px;">Producto</h3><div style="background:#f9f9f9; border-radius:8px; padding:12px; box-shadow:0 1px 4px rgba(0,0,0,0.04); display:flex; gap:18px; align-items:center;"><img src='assets/img/productos/corporal/1.jpg' alt='Producto' style='height:60px; border-radius:6px; box-shadow:0 1px 4px rgba(0,0,0,0.08);'><div><strong>Nombre:</strong> ${data.producto_nombre || ''}<br><strong>Descripción:</strong> ${data.producto_descripcion || ''}<br></div></div>`;
-      // Cliente
-      var clienteHtml = `<h3 style="margin-bottom:8px;">Cliente</h3><div style="background:#f9f9f9; border-radius:8px; padding:12px; box-shadow:0 1px 4px rgba(0,0,0,0.04);"><strong>Nombre:</strong> ${data.cliente_nombre || ''}<br><strong>Apellido:</strong> ${data.cliente_apellido || ''}<br><strong>Cédula:</strong> ${data.cedula || ''}<br><strong>Teléfono:</strong> ${data.telefono || ''}<br><strong>Correo:</strong> ${data.correo || ''}<br></div>`;
-      document.getElementById('datosCotizacion').innerHTML = `<div style='display:flex; gap:32px;'><div style='flex:1;'>${productoHtml}</div><div style='flex:1;'>${clienteHtml}</div></div>`;
-    })
-    .catch(err => {
-      document.getElementById('datosCotizacion').innerHTML = '<div style="color:red;">Error al cargar datos</div>';
-    });
-});
-</script>
+<script src="../validaciones/generarCotizacion.js"></script>

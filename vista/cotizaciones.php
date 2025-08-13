@@ -148,6 +148,3 @@ $result = $conn->query($sql);
     </tbody>
   </table>
 </div>
-<script src="../validaciones/cotizaciones.js"></script>
-*** End Patch
-<script src="../validaciones/cotizaciones.js"></script>
