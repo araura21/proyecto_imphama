@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($usuario !== '' && $contrasena !== '') {
         $db = new connectionDB();
         $conn = $db->connection();
-        $stmt = $conn->prepare('SELECT idUsuario, usuario, password_hash, estado, idRol FROM usuario WHERE usuario = ? LIMIT 1');
+    $stmt = $conn->prepare('SELECT idUsuario, usuario, password_hash, estado, idRol, idEmpleado FROM usuario WHERE usuario = ? LIMIT 1');
         $stmt->bind_param('s', $usuario);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -22,6 +22,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (($row['password_hash'] === $contrasena || password_verify($contrasena, $row['password_hash'])) && $row['estado'] === 'activo') {
                 $_SESSION['usuario'] = $row['usuario'];
                 $_SESSION['idUsuario'] = $row['idUsuario'];
+                // Obtener nombre y apellido del empleado
+                if (isset($row['idEmpleado'])) {
+                    $stmtEmp = $conn->prepare('SELECT nombre, apellido FROM empleado WHERE idEmpleado = ? LIMIT 1');
+                    $stmtEmp->bind_param('i', $row['idEmpleado']);
+                    $stmtEmp->execute();
+                    $resultEmp = $stmtEmp->get_result();
+                    if ($empRow = $resultEmp->fetch_assoc()) {
+                        $_SESSION['nombre'] = $empRow['nombre'];
+                        $_SESSION['apellido'] = $empRow['apellido'];
+                    }
+                    $stmtEmp->close();
+                }
                 // Obtener permisos del rol
                 $stmtPerm = $conn->prepare('SELECT permisos FROM rol WHERE idRol = ? LIMIT 1');
                 $stmtPerm->bind_param('i', $row['idRol']);

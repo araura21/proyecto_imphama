@@ -33,7 +33,14 @@
     </div>
     <div style="display:flex; align-items:center; gap:18px;">
       <i class="fas fa-user-circle" style="font-size:2em; color:#fff; margin-right:8px;"></i>
-      <span style="font-size:1.1em; color:#fff; font-weight:500; text-shadow:0 2px 8px rgba(0,0,0,0.18);">Bienvenido Alex Cuzco</span>
+      <span style="font-size:1.1em; color:#fff; font-weight:500; text-shadow:0 2px 8px rgba(0,0,0,0.18);">
+        Bienvenido
+        <?php
+          if (isset($_SESSION['nombre']) && isset($_SESSION['apellido'])) {
+            echo htmlspecialchars($_SESSION['nombre'] . ' ' . $_SESSION['apellido']);
+          }
+        ?>
+      </span>
       <a href="../controlador/logout.php" style="background:#e74c3c; color:#fff; padding:8px 14px; border-radius:5px; text-decoration:none; font-weight:bold; display:flex; align-items:center; box-shadow:0 2px 8px rgba(0,0,0,0.08); margin-left:12px;">
         <i class="fas fa-sign-out-alt" style="margin-right:6px;"></i> Cerrar sesión
       </a>
