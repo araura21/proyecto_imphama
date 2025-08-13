@@ -129,18 +129,22 @@ window.initClientes = function() {
 
   function cargarClientes() {
     let clientes = clientesCache;
-    let pageSize = 5;
+  let pageSize = 3;
     let currentPage = 1;
     const tabla = document.getElementById('tablaClientes');
     const tbody = tabla.querySelector('tbody');
     // Crear paginación y selector
+    // Eliminar paginación previa si existe
+    let oldPag = document.querySelector('.clientes-paginacion');
+    if (oldPag) oldPag.remove();
     const paginacionContainer = document.createElement('div');
+    paginacionContainer.classList.add('clientes-paginacion');
     paginacionContainer.style.display = 'flex';
     paginacionContainer.style.justifyContent = 'space-between';
     paginacionContainer.style.alignItems = 'center';
     paginacionContainer.style.marginBottom = '12px';
     const select = document.createElement('select');
-    [5,10,15].forEach(n => {
+    [3,5,7].forEach(n => {
       const opt = document.createElement('option');
       opt.value = n;
       opt.textContent = n + ' por página';
@@ -247,12 +251,9 @@ window.initClientes = function() {
       }
     };
 
-    // Insertar paginación arriba de la tabla
-    if (!tabla.previousElementSibling || !tabla.previousElementSibling.classList || !tabla.previousElementSibling.classList.contains('clientes-paginacion')) {
-      paginacionContainer.classList.add('clientes-paginacion');
-      tabla.parentNode.insertBefore(paginacionContainer, tabla);
-    }
-    renderTabla();
+  // Insertar paginación arriba de la tabla (siempre, ya que se elimina antes)
+  tabla.parentNode.insertBefore(paginacionContainer, tabla);
+  renderTabla();
   }
 };
 
