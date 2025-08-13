@@ -1,3 +1,35 @@
+// Funcionalidad para los botones de acción (Imprimir, PDF, Correo)
+function initBotonesAccionCotizacion() {
+  var btnImprimir = document.getElementById('btnImprimirCotizacion');
+  if (btnImprimir) {
+    btnImprimir.onclick = function() {
+      window.print();
+    };
+  }
+  var btnPDF = document.getElementById('btnGuardarPDF');
+  if (btnPDF) {
+    btnPDF.onclick = function() {
+      window.print();
+    };
+  }
+  var btnCorreo = document.getElementById('btnEnviarCorreo');
+  if (btnCorreo) {
+    btnCorreo.onclick = function() {
+      var cotizacionDiv = document.getElementById('datosCotizacion');
+      var comparativoDiv = document.getElementById('comparativoProveedores');
+      var contenido = '';
+      if (cotizacionDiv) contenido += cotizacionDiv.innerText + '\n\n';
+      if (comparativoDiv) contenido += comparativoDiv.innerText;
+      var asunto = encodeURIComponent('Cotización IMPHAMA');
+      var cuerpo = encodeURIComponent(contenido);
+      window.location.href = 'mailto:?subject=' + asunto + '&body=' + cuerpo;
+    };
+  }
+}
+// Ejecutar al cargar el script (por si el DOM ya está listo)
+initBotonesAccionCotizacion();
+// También asegurar que se ejecuta tras DOMContentLoaded
+document.addEventListener('DOMContentLoaded', initBotonesAccionCotizacion);
   // Comparar proveedores
   var btnComparar = document.getElementById('btnComparar');
   if (btnComparar) {

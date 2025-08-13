@@ -80,9 +80,9 @@
     </div>
   </div>
   <div style="display:flex; gap:18px;">
-    <button type="button" style="background:#34495e; color:#fff; border:none; padding:10px 24px; border-radius:6px; font-weight:600; font-size:1rem; cursor:pointer;">Imprimir Cotización</button>
-    <button type="button" style="background:#8e44ad; color:#fff; border:none; padding:10px 24px; border-radius:6px; font-weight:600; font-size:1rem; cursor:pointer;">Guardar PDF</button>
-    <button type="button" style="background:#27ae60; color:#fff; border:none; padding:10px 24px; border-radius:6px; font-weight:600; font-size:1rem; cursor:pointer;">Enviar por Correo</button>
+  <button type="button" id="btnImprimirCotizacion" style="background:#34495e; color:#fff; border:none; padding:10px 24px; border-radius:6px; font-weight:600; font-size:1rem; cursor:pointer;">Imprimir Cotización</button>
+  <button type="button" id="btnGuardarPDF" style="background:#8e44ad; color:#fff; border:none; padding:10px 24px; border-radius:6px; font-weight:600; font-size:1rem; cursor:pointer;">Guardar PDF</button>
+  <button type="button" id="btnEnviarCorreo" style="background:#27ae60; color:#fff; border:none; padding:10px 24px; border-radius:6px; font-weight:600; font-size:1rem; cursor:pointer;">Enviar por Correo</button>
   </div>
 </div>
 <script src="../validaciones/generarCotizacion.js"></script>
