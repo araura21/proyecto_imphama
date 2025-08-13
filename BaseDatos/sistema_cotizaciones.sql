@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 13-08-2025 a las 01:42:04
+-- Tiempo de generación: 13-08-2025 a las 13:13:23
 -- Versión del servidor: 8.0.17
 -- Versión de PHP: 7.3.10
 
@@ -75,7 +75,12 @@ CREATE TABLE `cotizacion` (
 INSERT INTO `cotizacion` (`idCotizacion`, `idProducto`, `idCliente`, `idUsuario`, `fecha_emision`, `notas`, `estado`) VALUES
 (1, 2, 1, 1, '2025-08-10 00:31:25', 'Cotización para equipo completo', 'borrador'),
 (2, 2, 2, 2, '2025-08-10 00:31:25', 'Oferta especial para cliente VIP', 'enviada'),
-(3, 2, 3, 3, '2025-08-10 00:31:25', 'Cotización válida 30 días', 'aceptada');
+(3, 2, 3, 3, '2025-08-10 00:31:25', 'Cotización válida 30 días', 'aceptada'),
+(21, 2, 1, 1, '2025-08-13 05:00:00', 'cotizacion incompleta', 'borrador'),
+(24, 1, 1, 1, '2025-08-13 05:00:00', 'cotizacion incompleta', 'borrador'),
+(25, 1, 2, 1, '2025-08-13 05:00:00', '1', 'borrador'),
+(26, 21, 1, 1, '2025-08-13 05:00:00', 'cotizacion incompleta', 'borrador'),
+(27, 1, 1, 1, '2025-08-13 05:00:00', 'cotizacion incompleta', 'aceptada');
 
 -- --------------------------------------------------------
 
@@ -151,9 +156,11 @@ CREATE TABLE `producto` (
 --
 
 INSERT INTO `producto` (`idProducto`, `nombre`, `descripcion`, `creado_at`, `estado`) VALUES
-(1, 'Laptop Gamer XYZ', 'Laptop con procesador i7, 16GB RAM, SSD 512GB', '2025-08-10 00:31:25', 'activo'),
-(2, 'Monitor 24\" FullHD', 'Monitor LED de 24 pulgadas con resolución FullHD', '2025-08-10 00:31:25', 'activo'),
-(3, 'Teclado Mecánico RGB', 'Teclado con switches mecánicos y retroiluminación RGB', '2025-08-10 00:31:25', 'activo');
+(1, 'casco 453', 'casco marluvas proteccion tipo c perfecto para ti bb', '2025-08-10 00:31:25', 'activo'),
+(2, 'guantes', 'guantes de porosidad calidad baja', '2025-08-10 00:31:25', 'activo'),
+(3, 'mascarilla', 'mascarilla perfecta para trabajos no pesados', '2025-08-10 00:31:25', 'activo'),
+(21, 'botas', 'como te digo son las mejores botas', '2025-08-13 10:51:14', 'activo'),
+(22, 'orejeras', 'livianas ligeras perffectas para trabajaos medios', '2025-08-13 11:05:32', 'inactivo');
 
 -- --------------------------------------------------------
 
@@ -206,8 +213,11 @@ CREATE TABLE `producto_detalle` (
 
 INSERT INTO `producto_detalle` (`idDetalle`, `idProducto`, `idProveedor`, `precio_unitario`, `cantidad`, `moneda`, `descuento_volumen`, `descuento_promocional`, `impuestos_incluidos`, `costo_envio`, `costo_instalacion`, `tiempo_entrega_dias`, `lugar_entrega`, `disponibilidad_inmediata`, `capacidad_suministro_mensual`, `metodo_transporte`, `entregas_parciales`, `marca`, `modelo`, `colores_disponibles`, `tamano_dimensiones`, `peso`, `material`, `pais_origen`, `certificaciones`, `garantia_mes`, `durabilidad_estimada`, `cumplimiento_normas`, `condiciones_pago`, `penalizaciones_retraso`, `devolucion`, `soporte_postventa`, `servicio_tecnico_incluido`, `capacitacion_incluida`, `observaciones`, `creado_at`) VALUES
 (1, 1, 1, '1200.5000', 10, 'USD', '5.00', '2.00', 1, '15.00', '0.00', 7, 'Almacén Central', 1, 100, 'Camión', 1, 'BrandA', 'XYZ-1000', 'Negro, Rojo', '35x25x2 cm', '2kg', 'Plástico y metal', 'China', 'ISO9001', 24, '3 años', 'Norma CE', '30 días', 'Multa 5%', 1, 1, 1, 0, 'Garantía extendida opcional', '2025-08-10 00:31:25'),
-(2, 2, 2, '180.0000', 20, 'USD', '3.00', '0.00', 1, '5.00', '0.00', 5, 'Sucursal Norte', 1, 200, 'Camión', 1, 'BrandB', 'M24FHD', 'Negro', '55x35x5 cm', '3kg', 'Plástico', 'Taiwán', 'ISO14001', 12, '2 años', 'Norma FCC', 'Contado', 'Sin penalizaciones', 0, 1, 0, 1, '', '2025-08-10 00:31:25'),
-(3, 3, 3, '85.7500', 50, 'USD', '7.00', '3.00', 1, '0.00', '0.00', 3, 'Almacén Central', 1, 500, 'DHL', 1, 'BrandC', 'MK-RGB', 'RGB', '45x15x5 cm', '0.8kg', 'Plástico', 'Corea', 'CE, RoHS', 18, '5 años', 'Norma FCC', '30 días', 'Multa 3%', 1, 1, 1, 0, 'Incluye manual de usuario', '2025-08-10 00:31:25');
+(2, 1, 2, '180.0000', 20, 'USD', '3.00', '0.00', 1, '5.00', '0.00', 5, 'Sucursal Norte', 1, 200, 'Camión', 1, 'BrandB', 'M24FHD', 'Negro', '55x35x5 cm', '3kg', 'Plástico', 'Taiwán', 'ISO14001', 12, '2 años', 'Norma FCC', 'Contado', 'Sin penalizaciones', 0, 1, 0, 1, '', '2025-08-10 00:31:25'),
+(3, 1, 3, '85.7500', 50, 'USD', '7.00', '3.00', 1, '0.00', '0.00', 3, 'Almacén Central', 1, 500, 'DHL', 1, 'BrandC', 'MK-RGB', 'RGB', '45x15x5 cm', '0.8kg', 'Plástico', 'Corea', 'CE, RoHS', 18, '5 años', 'Norma FCC', '30 días', 'Multa 3%', 1, 1, 1, 0, 'Incluye manual de usuario', '2025-08-10 00:31:25'),
+(21, 2, 1, '25.0000', 1, 'USD', '5.00', '2.00', 1, '10.00', '5.00', 7, 'Domicilio', 1, 100, 'Camión', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2025-08-13 04:43:36'),
+(22, 2, 2, '27.0000', 1, 'USD', '3.00', '1.00', 0, '12.00', '6.00', 10, 'Planta', 0, 80, 'Furgoneta', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2025-08-13 04:43:36'),
+(23, 2, 3, '24.5000', 1, 'USD', '4.00', '0.00', 1, '8.00', '4.00', 5, 'Bodega', 1, 120, 'Camión', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, '2025-08-13 04:43:36');
 
 -- --------------------------------------------------------
 
@@ -278,6 +288,8 @@ CREATE TABLE `usuario` (
   `password_hash` varchar(255) NOT NULL,
   `idRol` int(11) NOT NULL,
   `estado` enum('activo','inactivo') DEFAULT 'activo',
+  `intentos_fallidos` int(11) DEFAULT '0',
+  `bloqueado_hasta` datetime DEFAULT NULL,
   `creado_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -285,14 +297,16 @@ CREATE TABLE `usuario` (
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`idUsuario`, `idEmpleado`, `usuario`, `password_hash`, `idRol`, `estado`, `creado_at`) VALUES
-(1, 1, 'administrador@sistema.com', '$2y$10$jzdGjJ5zwCPqlg.Ul/PhzO3mFw27slkKzuK6Ud.QN4kbk.2NJGR7W', 1, 'activo', '2025-08-10 00:31:25'),
-(2, 2, 'maria.gonzalez@example.com', 'a2d679bed5c2f57e3540f88caa01d559c26a0df07df451b9d099d0a84bd5cf05', 2, 'activo', '2025-08-10 00:31:25'),
-(3, 3, 'carlos.rodriguez@example.com', 'a2d679bed5c2f57e3540f88caa01d559c26a0df07df451b9d099d0a84bd5cf05', 3, 'activo', '2025-08-10 00:31:25'),
-(4, 4, 'ana.lopez@example.com', 'a2d679bed5c2f57e3540f88caa01d559c26a0df07df451b9d099d0a84bd5cf05', 4, 'activo', '2025-08-10 00:31:25'),
-(5, 2, 'luis.martinez@example.com', 'a2d679bed5c2f57e3540f88caa01d559c26a0df07df451b9d099d0a84bd5cf05', 5, 'activo', '2025-08-10 00:31:25'),
-(6, 3, 'sofia.hernandez@example.com', 'a2d679bed5c2f57e3540f88caa01d559c26a0df07df451b9d099d0a84bd5cf05', 6, 'activo', '2025-08-10 00:31:25'),
-(30, 26, 'jileit@hotmail.com', '$2y$10$S2o9EJYuXopw/WDVzbYWhe/2CaztNVdwr1q0gtlqu/vWEwY4JLEuG', 37, 'activo', '2025-08-12 22:25:26');
+INSERT INTO `usuario` (`idUsuario`, `idEmpleado`, `usuario`, `password_hash`, `idRol`, `estado`, `intentos_fallidos`, `bloqueado_hasta`, `creado_at`) VALUES
+(1, 1, 'administrador@sistema.com', '$2y$10$jzdGjJ5zwCPqlg.Ul/PhzO3mFw27slkKzuK6Ud.QN4kbk.2NJGR7W', 1, 'activo', 0, NULL, '2025-08-10 00:31:25'),
+(2, 2, 'maria.gonzalez@example.com', 'a2d679bed5c2f57e3540f88caa01d559c26a0df07df451b9d099d0a84bd5cf05', 2, 'activo', 0, NULL, '2025-08-10 00:31:25'),
+(3, 3, 'carlos.rodriguez@example.com', 'a2d679bed5c2f57e3540f88caa01d559c26a0df07df451b9d099d0a84bd5cf05', 3, 'activo', 0, NULL, '2025-08-10 00:31:25'),
+(4, 4, 'ana.lopez@example.com', 'a2d679bed5c2f57e3540f88caa01d559c26a0df07df451b9d099d0a84bd5cf05', 4, 'activo', 0, NULL, '2025-08-10 00:31:25'),
+(5, 2, 'luis.martinez@example.com', 'a2d679bed5c2f57e3540f88caa01d559c26a0df07df451b9d099d0a84bd5cf05', 5, 'activo', 0, NULL, '2025-08-10 00:31:25'),
+(6, 3, 'sofia.hernandez@example.com', 'a2d679bed5c2f57e3540f88caa01d559c26a0df07df451b9d099d0a84bd5cf05', 6, 'activo', 0, NULL, '2025-08-10 00:31:25'),
+(30, 26, 'jileit@hotmail.com', '$2y$10$S2o9EJYuXopw/WDVzbYWhe/2CaztNVdwr1q0gtlqu/vWEwY4JLEuG', 37, 'activo', 3, '2025-08-13 13:22:50', '2025-08-12 22:25:26'),
+(31, 1, 'admin@sistema.com', '$2y$10$FEkMR9HasBkztOuBl7Kz6uDSAFoe8zWSXiiExmK5xLMJ04orBtW0q', 37, 'activo', 0, NULL, '2025-08-13 12:37:12'),
+(32, 1, 'juan.perez@example.com', '$2y$10$TmeYDFe7yKQGDGkMF3QFjuX7rhd1NruzX0/.p0ZaQQICMn92RG2uC', 3, 'activo', 0, NULL, '2025-08-13 13:11:27');
 
 --
 -- Índices para tablas volcadas
@@ -379,7 +393,7 @@ ALTER TABLE `cliente`
 -- AUTO_INCREMENT de la tabla `cotizacion`
 --
 ALTER TABLE `cotizacion`
-  MODIFY `idCotizacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `idCotizacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `cotizacion_detalle`
@@ -397,13 +411,13 @@ ALTER TABLE `empleado`
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `idProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `idProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `producto_detalle`
 --
 ALTER TABLE `producto_detalle`
-  MODIFY `idDetalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `idDetalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedor`
@@ -421,7 +435,7 @@ ALTER TABLE `rol`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- Restricciones para tablas volcadas

@@ -14,12 +14,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($usuario !== '' && $contrasena !== '') {
         $db = new connectionDB();
         $conn = $db->connection();
-    $stmt = $conn->prepare('SELECT idUsuario, usuario, password_hash, estado, idRol, idEmpleado FROM usuario WHERE usuario = ? LIMIT 1');
+    $stmt = $conn->prepare('SELECT idUsuario, usuario, password_hash, estado, idRol, idEmpleado, intentos_fallidos, bloqueado_hasta FROM usuario WHERE usuario = ? LIMIT 1');
         $stmt->bind_param('s', $usuario);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($row = $result->fetch_assoc()) {
-            if (($row['password_hash'] === $contrasena || password_verify($contrasena, $row['password_hash'])) && $row['estado'] === 'activo') {
+            // Verificar si está bloqueado
+            if ($row['bloqueado_hasta'] && strtotime($row['bloqueado_hasta']) > time()) {
+                $error = 'Cuenta bloqueada por intentos fallidos. Intente nuevamente después de '.date('H:i', strtotime($row['bloqueado_hasta'])).'.';
+            } else if (($row['password_hash'] === $contrasena || password_verify($contrasena, $row['password_hash'])) && $row['estado'] === 'activo') {
+                // Login exitoso: resetear intentos y desbloquear
+                $stmtReset = $conn->prepare('UPDATE usuario SET intentos_fallidos = 0, bloqueado_hasta = NULL WHERE idUsuario = ?');
+                $stmtReset->bind_param('i', $row['idUsuario']);
+                $stmtReset->execute();
+                $stmtReset->close();
                 $_SESSION['usuario'] = $row['usuario'];
                 $_SESSION['idUsuario'] = $row['idUsuario'];
                 // Obtener nombre y apellido del empleado
@@ -61,7 +69,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header('Location: ../vista/administrador.php');
                 exit();
             } else {
-                $error = 'Usuario o contraseña incorrectos, o usuario inactivo.';
+                // Login fallido: aumentar intentos
+                $intentos = isset($row['intentos_fallidos']) ? (int)$row['intentos_fallidos'] : 0;
+                $intentos++;
+                $bloqueado = null;
+                if ($intentos >= 3) {
+                    $minutosBloqueo = 10;
+                    $bloqueado = date('Y-m-d H:i:s', strtotime("+$minutosBloqueo minutes"));
+                }
+                $stmtUp = $conn->prepare('UPDATE usuario SET intentos_fallidos = ?, bloqueado_hasta = ? WHERE idUsuario = ?');
+                $stmtUp->bind_param('isi', $intentos, $bloqueado, $row['idUsuario']);
+                $stmtUp->execute();
+                $stmtUp->close();
+                if ($bloqueado) {
+                    $error = 'Cuenta bloqueada por 10 minutos por intentos fallidos.';
+                } else {
+                    $error = 'Usuario o contraseña incorrectos, o usuario inactivo.';
+                }
             }
         } else {
             $error = 'Usuario o contraseña incorrectos.';
