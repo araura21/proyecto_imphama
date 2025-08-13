@@ -9,10 +9,7 @@
         <label for="nombre" style="font-weight:600;">Nombre:</label>
         <input id="nombre" type="text" name="nombre" required style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;">
       </div>
-      <div>
-        <label for="imagen" style="font-weight:600;">Imagen:</label>
-        <input id="imagen" type="file" name="imagen" accept="image/*" style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;">
-      </div>
+  <!-- Imagen eliminada del formulario -->
       <div style="grid-column:1/3;">
         <label for="descripcion" style="font-weight:600;">Descripción:</label>
         <textarea id="descripcion" name="descripcion" rows="3" required style="width:100%; padding:8px; border-radius:4px; border:1px solid #ccc;"></textarea>
@@ -32,7 +29,7 @@
       <tr style="background:#f4f4f4;">
         <th style="padding:10px; border:1px solid #ddd;">ID Producto</th>
         <th style="padding:10px; border:1px solid #ddd;">Nombre</th>
-        <th style="padding:10px; border:1px solid #ddd;">Imagen</th>
+  <!-- Imagen eliminada de la tabla -->
         <th style="padding:10px; border:1px solid #ddd;">Descripción</th>
         <th style="padding:10px; border:1px solid #ddd;">Estado</th>
         <th style="padding:10px; border:1px solid #ddd;">Acciones</th>
@@ -45,5 +42,6 @@
 </div>
 <script src="../validaciones/productos.js"></script>
 <script>
-  window.initProductos && window.initProductos();
+window.initProductos && window.initProductos();
+</script>
 </script>

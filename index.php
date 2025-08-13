@@ -79,5 +79,18 @@
 	</div>
 </div>
 
+<script>
+// Evitar que el usuario navegue hacia atrás después de iniciar sesión
+if (window.history && window.history.pushState) {
+	window.history.pushState(null, '', window.location.href);
+	window.onpopstate = function () {
+		window.location.href = window.location.href; // Fuerza recarga en login
+	};
+}
+// Si el usuario intenta ir hacia adelante (después de logout), forzar recarga
+if (performance && performance.navigation && performance.navigation.type === 2) {
+	window.location.reload();
+}
+</script>
 </body>
 </html>

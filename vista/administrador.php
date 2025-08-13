@@ -11,6 +11,11 @@
 <body>
   <?php
     session_start();
+    // Protección: si no hay usuario logueado, redirigir a login
+    if (!isset($_SESSION['idUsuario']) || !isset($_SESSION['nombre'])) {
+      header('Location: ../index.php');
+      exit();
+    }
     // Ejemplo: $_SESSION['permisos'] = ['dashboard', 'auditoria', 'roles', 'empleados'];
     // Si no existen permisos, por defecto todos desactivados
     $permisos = isset($_SESSION['permisos']) ? $_SESSION['permisos'] : [];
